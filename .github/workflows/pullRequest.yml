@@ -131,10 +131,22 @@ jobs:
       # instala também as bibliotecas de sistema exigidas pelo
       # Chromium no runner Ubuntu, e ambos os alvos são listados
       # explicitamente para não depender do empacotamento padrão.
+      #
+      # O download do binário do CDN da Playwright já falhou de
+      # forma intermitente aqui (arquivo baixado parcialmente/
+      # ausente, só percebido depois, quando os testes tentam
+      # abrir o browser). O comando é idempotente, então tentamos
+      # de novo algumas vezes antes de desistir.
       # ------------------------------------------------------
       - name: Install Playwright Chromium browser
         working-directory: packages/components
-        run: bunx playwright install --with-deps chromium chromium-headless-shell
+        run: |
+          for attempt in 1 2 3; do
+            bunx playwright install --with-deps chromium chromium-headless-shell && exit 0
+            echo "Playwright install failed (attempt $attempt/3), retrying..."
+            sleep 10
+          done
+          exit 1
 
       # ------------------------------------------------------
       # Executa todos os testes.
@@ -218,6 +230,21 @@ jobs:
 
       - name: Typecheck components against React ${{ matrix.react-version }}
         run: bun run components:typecheck
+
+      # ------------------------------------------------------
+      # Mesma necessidade do job "pull-request": os testes de
+      # browser-mode do RichText exigem um Chromium real, que
+      # não vem instalado por padrão.
+      # ------------------------------------------------------
+      - name: Install Playwright Chromium browser
+        working-directory: packages/components
+        run: |
+          for attempt in 1 2 3; do
+            bunx playwright install --with-deps chromium chromium-headless-shell && exit 0
+            echo "Playwright install failed (attempt $attempt/3), retrying..."
+            sleep 10
+          done
+          exit 1
 
       - name: Test components against React ${{ matrix.react-version }}
         run: bun run components:test

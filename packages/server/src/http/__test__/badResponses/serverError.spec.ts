@@ -329,6 +329,39 @@ describe("ServerError", () => {
 		});
 	});
 
+	describe("cause exposure by environment (SEC-05)", () => {
+		afterEach(() => {
+			delete process.env.NODE_ENV;
+		});
+
+		it("hides cause from the response body in production", async () => {
+			process.env.NODE_ENV = "production";
+
+			const cause = {
+				stack: "Error: connect ECONNREFUSED\n    at internal/db.ts:12",
+				sql: "SELECT * FROM users",
+			};
+			const error = new ServerError("Internal server error", cause);
+			const body = await error.toResponse().json();
+
+			expect(body).toEqual({
+				name: "ServerError",
+				message: "Internal server error",
+				cause: undefined,
+			});
+		});
+
+		it("still exposes cause in development for debugging", async () => {
+			process.env.NODE_ENV = "development";
+
+			const cause = { errorCode: "DB_ERROR" };
+			const error = new ServerError("Internal server error", cause);
+			const body = await error.toResponse().json();
+
+			expect(body.cause).toBe(JSON.stringify(cause));
+		});
+	});
+
 	describe("edge cases", () => {
 		it("should handle empty message", () => {
 			const error = new ServerError("");

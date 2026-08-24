@@ -1,3 +1,8 @@
+import {
+	isValidJsIdentifier,
+	toSafeScriptJson,
+} from "../../../utils/escapeForInlineScript";
+
 type AppendToDataLayer = {
 	dataLayer: Record<string, string>;
 	dataLayerName: string;
@@ -6,9 +11,19 @@ type AppendToDataLayer = {
 function appendToDataLayer(props: AppendToDataLayer) {
 	const { dataLayer, dataLayerName } = props;
 
+	const safeDataLayerName = isValidJsIdentifier(dataLayerName)
+		? dataLayerName
+		: "dataLayer";
+
+	if (safeDataLayerName !== dataLayerName) {
+		console.warn(
+			`Invalid dataLayerName "${dataLayerName}", falling back to "dataLayer"`,
+		);
+	}
+
 	return `
-  window.${dataLayerName} = window.${dataLayerName} || [];
-  window.${dataLayerName}.push(${JSON.stringify(dataLayer)})`;
+  window.${safeDataLayerName} = window.${safeDataLayerName} || [];
+  window.${safeDataLayerName}.push(${toSafeScriptJson(dataLayer)})`;
 }
 
 export { appendToDataLayer };

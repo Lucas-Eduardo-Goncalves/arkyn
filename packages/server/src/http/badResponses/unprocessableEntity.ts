@@ -1,4 +1,24 @@
+import { parseSensitiveData } from "@arkyn/shared";
+import { SENSITIVE_DATA_KEYS } from "../../utilities/sensitiveDataKeys";
 import { BadResponse } from "./_badResponse";
+
+/**
+ * Masks sensitive values (passwords, tokens, etc. — see `SENSITIVE_DATA_KEYS`) inside a
+ * form-submission payload before it is echoed back to the client. `fields`/`data` on
+ * `UnprocessableEntity` exist to repopulate a form, so submitted secrets must never be
+ * returned in cleartext.
+ */
+function redactSensitiveValues<T>(value: T): T {
+	if (value === undefined) return value;
+
+	try {
+		return JSON.parse(
+			parseSensitiveData(JSON.stringify(value), [...SENSITIVE_DATA_KEYS]),
+		);
+	} catch {
+		return value;
+	}
+}
 
 /**
  * HTTP 422 Unprocessable Entity, the request is well-formed but contains semantic validation errors.
@@ -33,10 +53,14 @@ class UnprocessableEntity extends BadResponse {
 		this.status = 422;
 		this.statusText = props.message || "Unprocessable entity";
 		this.debugColor = "yellow";
+		// `cause` here is structured, redacted form-validation data meant for the
+		// client (to repopulate the form) — unlike other responses' `cause`, it stays
+		// visible in production.
+		this.exposeCauseInProduction = true;
 		this.cause = {
-			data: props.data,
+			data: redactSensitiveValues(props.data),
 			fieldErrors: props.fieldErrors,
-			fields: props.fields,
+			fields: redactSensitiveValues(props.fields),
 		};
 
 		this.onDebug();

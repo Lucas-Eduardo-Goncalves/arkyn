@@ -110,6 +110,80 @@ describe("BadResponse", () => {
 		});
 	});
 
+	describe("cause exposure by environment (SEC-05)", () => {
+		afterEach(() => {
+			delete process.env.NODE_ENV;
+		});
+
+		it("includes cause in the body in development", () => {
+			process.env.NODE_ENV = "development";
+
+			const badResponse = new BadResponse();
+			badResponse.cause = { stack: "at internal/module.js:42" };
+
+			expect(badResponse.makeBody().cause).toEqual({
+				stack: "at internal/module.js:42",
+			});
+		});
+
+		it("omits cause from the body in production by default", () => {
+			process.env.NODE_ENV = "production";
+
+			const badResponse = new BadResponse();
+			badResponse.cause = {
+				stack: "at internal/module.js:42",
+				sql: "SELECT * FROM users WHERE password = 'x'",
+			};
+
+			const body = badResponse.makeBody();
+
+			expect(body.cause).toBeUndefined();
+			expect(JSON.stringify(body)).not.toContain("internal/module.js");
+		});
+
+		it("still reports name and message in production even when cause is hidden", () => {
+			process.env.NODE_ENV = "production";
+
+			const badResponse = new BadResponse();
+			badResponse.name = "DatabaseError";
+			badResponse.statusText = "Something went wrong";
+			badResponse.cause = { secret: "value" };
+
+			expect(badResponse.makeBody()).toEqual({
+				name: "DatabaseError",
+				message: "Something went wrong",
+				cause: undefined,
+			});
+		});
+
+		it("keeps cause visible in production when exposeCauseInProduction is set", () => {
+			process.env.NODE_ENV = "production";
+
+			class ClientFacingResponse extends BadResponse {
+				constructor() {
+					super();
+					this.exposeCauseInProduction = true;
+					this.cause = { fieldErrors: { email: "Invalid email" } };
+				}
+			}
+
+			const response = new ClientFacingResponse();
+
+			expect(response.makeBody().cause).toEqual({
+				fieldErrors: { email: "Invalid email" },
+			});
+		});
+
+		it("does not hide cause for non-production environments like test/staging", () => {
+			process.env.NODE_ENV = "staging";
+
+			const badResponse = new BadResponse();
+			badResponse.cause = { detail: "still visible" };
+
+			expect(badResponse.makeBody().cause).toEqual({ detail: "still visible" });
+		});
+	});
+
 	describe("onDebug method", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: intentional
 		let consoleLogSpy: any;

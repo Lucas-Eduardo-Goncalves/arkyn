@@ -66,25 +66,58 @@ function extractDomain(email: string): string | null {
 
 const DNS_RECORD_TYPES = ["MX", "A", "AAAA"] as const;
 
+/** Default time to wait for a single DNS lookup before treating it as unresolved. */
+const DEFAULT_DNS_TIMEOUT_MS = 5000;
+
+/**
+ * Resolves a single DNS record type for `domain`, racing it against `timeoutMs` so a slow
+ * or unresponsive DNS server can never leave the caller waiting indefinitely. A timeout is
+ * treated the same as "no record found" (`false`), not as a validation error.
+ */
 async function tryResolveDnsRecord(
 	domain: string,
 	recordType: string,
+	timeoutMs: number,
 ): Promise<boolean> {
-	try {
-		await dns?.promises?.resolve(domain, recordType);
-		return true;
-	} catch {
-		return false;
-	}
+	return new Promise((resolve) => {
+		let settled = false;
+
+		const timer = setTimeout(() => {
+			if (settled) return;
+			settled = true;
+			resolve(false);
+		}, timeoutMs);
+		timer.unref?.();
+
+		dns.promises
+			.resolve(domain, recordType)
+			.then(() => {
+				if (settled) return;
+				settled = true;
+				clearTimeout(timer);
+				resolve(true);
+			})
+			.catch(() => {
+				if (settled) return;
+				settled = true;
+				clearTimeout(timer);
+				resolve(false);
+			});
+	});
 }
 
-async function isValidDns(domain: string): Promise<boolean> {
+async function isValidDns(domain: string, timeoutMs: number): Promise<boolean> {
 	for (const recordType of DNS_RECORD_TYPES) {
-		const hasRecord = await tryResolveDnsRecord(domain, recordType);
+		const hasRecord = await tryResolveDnsRecord(domain, recordType, timeoutMs);
 		if (hasRecord) return true;
 	}
 	return false;
 }
+
+type ValidateEmailOptions = {
+	/** Max time (ms) to wait for each DNS lookup before treating it as unresolved. @default 5000 */
+	dnsTimeoutMs?: number;
+};
 
 /**
  * Validates if an email address is valid in all possible ways, including DNS validation.
@@ -94,7 +127,11 @@ async function isValidDns(domain: string): Promise<boolean> {
  * - Validating advanced RFC 5322 compliance rules
  * - Verifying that the domain has valid MX or A records in DNS
  *
+ * DNS lookups are bounded by `options.dnsTimeoutMs` (default 5000ms) so a slow or
+ * unresponsive DNS server can never leave the returned promise pending indefinitely.
+ *
  * @param rawEmail - The email address to validate.
+ * @param options.dnsTimeoutMs - Max time (ms) to wait for each DNS lookup. Default: 5000.
  * @returns `true` if the email passes format checks and its domain resolves in DNS, otherwise `false`.
  *
  * @example
@@ -102,10 +139,14 @@ async function isValidDns(domain: string): Promise<boolean> {
  * await validateEmail("user@gmail.com"); // true
  * await validateEmail("user@gmil.com"); // false (invalid domain)
  * await validateEmail("invalid-email"); // false (invalid format)
+ * await validateEmail("user@slow-dns.com", { dnsTimeoutMs: 2000 }); // bounded wait
  * ```
  */
 
-async function validateEmail(rawEmail: string): Promise<boolean> {
+async function validateEmail(
+	rawEmail: string,
+	options?: ValidateEmailOptions,
+): Promise<boolean> {
 	if (!rawEmail || typeof rawEmail !== "string") return false;
 	const email = rawEmail.trim();
 
@@ -115,7 +156,8 @@ async function validateEmail(rawEmail: string): Promise<boolean> {
 	const domain = extractDomain(email);
 	if (!domain) return false;
 
-	return await isValidDns(domain);
+	const timeoutMs = options?.dnsTimeoutMs ?? DEFAULT_DNS_TIMEOUT_MS;
+	return await isValidDns(domain, timeoutMs);
 }
 
 export { validateEmail };

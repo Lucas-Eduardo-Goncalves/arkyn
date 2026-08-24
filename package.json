@@ -22,6 +22,8 @@
 		"@arkyn/shared": "workspace:*",
 		"@arkyn/templates": "workspace:*",
 		"@biomejs/biome": "^2.5.7",
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
 		"concurrently": "^10.0.4"
 	},
 	"overrides": {
@@ -42,7 +44,7 @@
 		"slate-react": "^0.125.1",
 		"typescript": "^5.9.3",
 		"vite": "^8.1.0",
-		"vitest": "^4.1.9",
+		"vitest": "^4.1.11",
 		"zod": "^4.4.3"
 	},
 	"scripts": {
@@ -55,7 +57,7 @@
 		"all:release:minor": "bun run templates:release:minor && bun run shared:release:minor && bun run components:release:minor && bun run server:release:minor && bun run cli:release:minor",
 		"all:release:patch": "bun run templates:release:patch && bun run shared:release:patch && bun run components:release:patch && bun run server:release:patch && bun run cli:release:patch",
 		"all:test": "concurrently \"bun run cli:test\" \"bun run components:test\" \"bun run server:test\" \"bun run shared:test\" \"bun run templates:test\"",
-		"all:typecheck": "concurrently \"bun run cli:typecheck\" \"bun run components:typecheck\" \"bun run server:typecheck\" \"bun run shared:typecheck\" \"bun run templates:typecheck\"",
+		"all:typecheck": "concurrently \"bun run cli:typecheck\" \"bun run components:typecheck\" \"bun run server:typecheck\" \"bun run shared:typecheck\" \"bun run templates:typecheck\" \"bun run scripts:typecheck\"",
 		"biome:format": "biome format --write .",
 		"biome:check": "biome check . --max-diagnostics=10000",
 		"biome:check:ci": "biome check .",
@@ -81,6 +83,7 @@
 		"components:test": "cd packages/components && bun run test",
 		"components:test:watch": "cd packages/components && bun run test:watch",
 		"components:typecheck": "cd packages/components && bun run typecheck",
+		"development:build": "cd apps/development && bun run build",
 		"development:dev": "cd apps/development && bun run dev",
 		"development:typecheck": "cd apps/development && bun run typecheck",
 		"server:audit": "cd packages/server && bun run audit",
@@ -94,6 +97,7 @@
 		"server:test": "cd packages/server && bun run test",
 		"server:test:watch": "cd packages/server && bun run test:watch",
 		"server:typecheck": "cd packages/server && bun run typecheck",
+		"scripts:typecheck": "bunx tsc --project scripts/tsconfig.json --noEmit",
 		"shared:audit": "cd packages/shared && bun run audit",
 		"shared:build": "cd packages/shared && bun run build",
 		"shared:publish:beta": "cd packages/shared && bun run publish:beta",

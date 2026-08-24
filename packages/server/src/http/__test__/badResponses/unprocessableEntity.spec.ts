@@ -54,7 +54,39 @@ describe("UnprocessableEntity", () => {
 			expect(error.cause).toEqual({
 				data: undefined,
 				fieldErrors: undefined,
-				fields,
+				fields: { email: "invalid-email", password: "****" },
+			});
+		});
+
+		it("should redact a sensitive field's value instead of echoing it back", () => {
+			const error = new UnprocessableEntity({
+				fields: { email: "user@example.com", password: "hunter2" },
+			});
+
+			expect(error.cause.fields).toEqual({
+				email: "user@example.com",
+				password: "****",
+			});
+		});
+
+		it("should redact token/authorization-shaped fields", () => {
+			const error = new UnprocessableEntity({
+				fields: { token: "abc123", authorization: "Bearer xyz" },
+			});
+
+			expect(error.cause.fields).toEqual({
+				token: "****",
+				authorization: "****",
+			});
+		});
+
+		it("should redact sensitive values nested inside data", () => {
+			const error = new UnprocessableEntity({
+				data: { user: { email: "user@example.com", secret: "top-secret" } },
+			});
+
+			expect(error.cause.data).toEqual({
+				user: { email: "user@example.com", secret: "****" },
 			});
 		});
 
@@ -282,7 +314,11 @@ describe("UnprocessableEntity", () => {
 			expect(response.status).toBe(422);
 			expect(body.message).toBe("Form validation failed");
 			expect(body.cause.fieldErrors).toEqual(props.fieldErrors);
-			expect(body.cause.fields).toEqual(props.fields);
+			expect(body.cause.fields).toEqual({
+				email: "invalid-email",
+				password: "****",
+				confirmPassword: "****",
+			});
 		});
 
 		it("should handle single field validation error", async () => {
@@ -410,6 +446,30 @@ describe("UnprocessableEntity", () => {
 		});
 	});
 
+	describe("cause exposure in production (SEC-05)", () => {
+		afterEach(() => {
+			delete process.env.NODE_ENV;
+		});
+
+		it("still returns fieldErrors/fields in production so the client can repopulate the form", async () => {
+			process.env.NODE_ENV = "production";
+
+			const props = {
+				message: "Validation failed",
+				fieldErrors: { email: "Invalid email" },
+				fields: { email: "bad-email" },
+			};
+			const error = new UnprocessableEntity(props);
+			const body = await error.toResponse().json();
+
+			expect(body.cause).toEqual({
+				data: undefined,
+				fieldErrors: props.fieldErrors,
+				fields: props.fields,
+			});
+		});
+	});
+
 	describe("edge cases", () => {
 		it("should handle empty props object", () => {
 			const error = new UnprocessableEntity({});
@@ -467,7 +527,7 @@ describe("UnprocessableEntity", () => {
 				validation: {
 					rules: {
 						email: ["required", "email"],
-						password: ["required", "min:8"],
+						age: ["required", "min:18"],
 					},
 				},
 			};

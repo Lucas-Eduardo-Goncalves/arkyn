@@ -128,6 +128,67 @@ describe("decodeRequestBody", () => {
 		});
 	});
 
+	describe("Body size limit (SEC-10)", () => {
+		it("should accept a body within the default size limit", async () => {
+			const jsonBody = JSON.stringify({ name: "John" });
+			const request = createMockRequest(jsonBody, "application/json");
+
+			const result = await decodeRequestBody(request);
+
+			expect(result).toEqual({ name: "John" });
+		});
+
+		it("should reject a body larger than the default limit", async () => {
+			const hugeBody = JSON.stringify({ data: "a".repeat(6 * 1024 * 1024) });
+			const request = createMockRequest(hugeBody, "application/json");
+
+			await expect(decodeRequestBody(request)).rejects.toThrow(BadRequest);
+		});
+
+		it("should reject a body larger than a configured custom limit", async () => {
+			const body = JSON.stringify({ data: "a".repeat(2000) });
+			const request = createMockRequest(body, "application/json");
+
+			await expect(
+				decodeRequestBody(request, { maxBodySizeBytes: 1000 }),
+			).rejects.toThrow(BadRequest);
+		});
+
+		it("should accept a body within a configured custom limit", async () => {
+			const body = JSON.stringify({ ok: true });
+			const request = createMockRequest(body, "application/json");
+
+			const result = await decodeRequestBody(request, {
+				maxBodySizeBytes: 1000,
+			});
+
+			expect(result).toEqual({ ok: true });
+		});
+
+		it("should reject early based on a lying Content-Length header before reading the full body", async () => {
+			const request = new Request("http://localhost", {
+				method: "POST",
+				body: JSON.stringify({ ok: true }),
+				headers: { "content-length": String(10 * 1024 * 1024) },
+			});
+
+			await expect(
+				decodeRequestBody(request, { maxBodySizeBytes: 1000 }),
+			).rejects.toThrow(BadRequest);
+		});
+
+		it("should not reject when Content-Length is missing but the body is within the limit", async () => {
+			const body = JSON.stringify({ ok: true });
+			const request = createMockRequest(body, "application/json");
+
+			const result = await decodeRequestBody(request, {
+				maxBodySizeBytes: 1000,
+			});
+
+			expect(result).toEqual({ ok: true });
+		});
+	});
+
 	describe("Edge cases", () => {
 		it("should parse empty JSON object", async () => {
 			const jsonBody = "{}";

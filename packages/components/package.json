@@ -1,6 +1,6 @@
 {
   "name": "@arkyn/components",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -48,13 +48,13 @@
     "prebuild": "rm -rf dist",
     "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
     "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ./generate-version.ts beta",
-    "release:patch": "bun ./generate-version.ts patch",
-    "release:minor": "bun ./generate-version.ts minor",
-    "release:major": "bun ./generate-version.ts major",
+    "release:beta": "bun ../../scripts/generate-version.ts beta",
+    "release:patch": "bun ../../scripts/generate-version.ts patch",
+    "release:minor": "bun ../../scripts/generate-version.ts minor",
+    "release:major": "bun ../../scripts/generate-version.ts major",
     "test": "bunx vitest --config vitest.config.ts --run",
     "test:watch": "bunx vitest --config vitest.config.ts --watch",
-    "typecheck": "bunx tsc --project tsconfig.json --noEmit"
+    "typecheck": "bunx tsc --project tsconfig.json --noEmit && bunx tsc --project tsconfig.scripts.json --noEmit"
   },
   "sideEffects": [
     "*.css"
@@ -123,11 +123,14 @@
     "@types/react-dom": "^19.2.3",
     "@types/react-scroll": "^1.8.10",
     "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/browser": "4.1.11",
+    "@vitest/browser-playwright": "4.1.11",
     "html-react-parser": "6.1.7",
     "is-hotkey": "^0.2.0",
     "jsdom": "^30.0.1",
     "lucide-react": "catalog:",
     "mapbox-gl": "^3.25.0",
+    "playwright": "^1.62.1",
     "postcss": "^8.5.16",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

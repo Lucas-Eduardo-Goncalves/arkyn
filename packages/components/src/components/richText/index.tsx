@@ -292,11 +292,7 @@ function RichText(props: RichTextProps) {
 					)}
 				</div>
 
-				<input
-					type="hidden"
-					name={name}
-					value={inputValue.slice(0, maxLimit)}
-				/>
+				<input type="hidden" name={name} value={inputValue} />
 
 				<input type="hidden" name={`${name}Count`} value={charactersCount} />
 			</Slate>

@@ -1,6 +1,6 @@
 {
   "name": "@arkyn/shared",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "type": "module",
@@ -41,14 +41,14 @@
   "sideEffects": false,
   "scripts": {
     "audit": "bun audit",
-    "build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ./generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
+    "build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
     "prebuild": "rm -rf dist",
     "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
     "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ./generate-version.ts beta",
-    "release:patch": "bun ./generate-version.ts patch",
-    "release:minor": "bun ./generate-version.ts minor",
-    "release:major": "bun ./generate-version.ts major",
+    "release:beta": "bun ../../scripts/generate-version.ts beta",
+    "release:patch": "bun ../../scripts/generate-version.ts patch",
+    "release:minor": "bun ../../scripts/generate-version.ts minor",
+    "release:major": "bun ../../scripts/generate-version.ts major",
     "test": "bunx vitest --config vitest.config.ts --run",
     "test:watch": "bunx vitest --config vitest.config.ts --watch",
     "typecheck": "bunx tsc --project tsconfig.json --noEmit"

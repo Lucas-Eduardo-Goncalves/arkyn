@@ -6,6 +6,10 @@
 **/necessary-changes
 **/guides
 
+# Vitest Browser Mode artifacts (attachments/screenshots captured during test runs)
+**/.vitest-attachments/
+**/__screenshots__/
+
 logs
 _.log
 npm-debug.log_

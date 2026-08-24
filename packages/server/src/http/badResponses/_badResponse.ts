@@ -10,6 +10,13 @@ class BadResponse {
 	private _status: number = 500;
 	private _statusText: string = "Unknown error";
 	private _debugColor: "green" | "yellow" | "cyan" | "red" = "red";
+	/**
+	 * When `false` (the default), `makeBody()` omits `cause` in production so internal
+	 * details (stack traces, SQL, infra info) never reach the client. Subclasses whose
+	 * `cause` is safe, client-facing data (e.g. `UnprocessableEntity`'s form field errors)
+	 * set this to `true`.
+	 */
+	protected exposeCauseInProduction = false;
 
 	// biome-ignore lint/suspicious/noExplicitAny: intentional
 	get cause(): any {
@@ -70,10 +77,13 @@ class BadResponse {
 	}
 
 	makeBody() {
+		const isProduction = process.env.NODE_ENV === "production";
+		const hideCause = isProduction && !this.exposeCauseInProduction;
+
 		return {
 			name: this._name,
 			message: this._statusText,
-			cause: this._cause,
+			cause: hideCause ? undefined : this._cause,
 		};
 	}
 }

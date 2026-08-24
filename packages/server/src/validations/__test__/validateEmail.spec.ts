@@ -1,7 +1,34 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+// `validateEmail` performs real DNS lookups (MX/A/AAAA). Mocking `node:dns` keeps these
+// tests deterministic and offline instead of depending on live internet/DNS (TEST-01).
+const { resolveMock } = vi.hoisted(() => ({ resolveMock: vi.fn() }));
+
+vi.mock("node:dns", () => ({
+	default: { promises: { resolve: resolveMock } },
+	promises: { resolve: resolveMock },
+}));
+
 import { validateEmail } from "../validateEmail";
 
+function enotfound() {
+	return Object.assign(new Error("queryMx ENOTFOUND"), { code: "ENOTFOUND" });
+}
+
+function enodata() {
+	return Object.assign(new Error("queryMx ENODATA"), { code: "ENODATA" });
+}
+
 describe("validateEmail", () => {
+	beforeEach(() => {
+		resolveMock.mockReset();
+		// Default: every DNS lookup succeeds, so format/syntax-focused tests below don't
+		// need to care about DNS at all.
+		resolveMock.mockResolvedValue([
+			{ exchange: "mx.example.com", priority: 10 },
+		]);
+	});
+
 	describe("valid email formats", () => {
 		it("should validate standard email format", async () => {
 			const result = await validateEmail("user@gmail.com");
@@ -177,26 +204,121 @@ describe("validateEmail", () => {
 	});
 
 	describe("DNS validation", () => {
-		it("should validate email with valid DNS records", async () => {
-			const result = await validateEmail("test@gmail.com");
+		it("should validate email when the domain has an MX record", async () => {
+			resolveMock.mockImplementation((_domain, type) =>
+				type === "MX"
+					? Promise.resolve([{ exchange: "mx.example.com", priority: 10 }])
+					: Promise.reject(enotfound()),
+			);
+
+			const result = await validateEmail("user@example.com");
+
+			expect(result).toBe(true);
+			expect(resolveMock).toHaveBeenCalledWith("example.com", "MX");
+		});
+
+		it("should fall back to the A record when MX is absent", async () => {
+			resolveMock.mockImplementation((_domain, type) => {
+				if (type === "MX") return Promise.reject(enotfound());
+				if (type === "A") return Promise.resolve(["93.184.216.34"]);
+				return Promise.reject(enotfound());
+			});
+
+			const result = await validateEmail("user@example.com");
+
 			expect(result).toBe(true);
 		});
 
-		it("should reject email with invalid domain (no DNS)", async () => {
+		it("should fall back to the AAAA record when MX and A are absent", async () => {
+			resolveMock.mockImplementation((_domain, type) => {
+				if (type === "AAAA") return Promise.resolve(["2606:2800:220:1::"]);
+				return Promise.reject(enotfound());
+			});
+
+			const result = await validateEmail("user@example.com");
+
+			expect(result).toBe(true);
+		});
+
+		it("should reject when the domain has no MX/A/AAAA records (ENOTFOUND)", async () => {
+			resolveMock.mockRejectedValue(enotfound());
+
 			const result = await validateEmail(
 				"user@thisisnotarealdomain123456789.com",
 			);
+
+			expect(result).toBe(false);
+			expect(resolveMock).toHaveBeenCalledTimes(3);
+		});
+
+		it("should reject when DNS resolves with ENODATA for every record type", async () => {
+			resolveMock.mockRejectedValue(enodata());
+
+			const result = await validateEmail("user@example.com");
+
 			expect(result).toBe(false);
 		});
 
-		it("should validate email with MX records", async () => {
-			const result = await validateEmail("user@outlook.com");
-			expect(result).toBe(true);
+		it("should treat an unexpected DNS error as no record found, without throwing", async () => {
+			resolveMock.mockRejectedValue(new Error("EBADRESP: malformed response"));
+
+			await expect(validateEmail("user@example.com")).resolves.toBe(false);
+		});
+	});
+
+	describe("DNS timeout (SEC-09)", () => {
+		afterEach(() => {
+			vi.useRealTimers();
 		});
 
-		it("should validate email with A records", async () => {
-			const result = await validateEmail("user@github.com");
+		it("resolves to false instead of hanging when DNS never responds", async () => {
+			resolveMock.mockImplementation(() => new Promise(() => {}));
+
+			const start = Date.now();
+			const result = await validateEmail("user@example.com", {
+				dnsTimeoutMs: 30,
+			});
+
+			expect(result).toBe(false);
+			// 3 record types * 30ms timeout, plus generous scheduling slack.
+			expect(Date.now() - start).toBeLessThan(1000);
+		});
+
+		it("uses the default timeout when none is provided", async () => {
+			vi.useFakeTimers();
+			resolveMock.mockImplementation(() => new Promise(() => {}));
+
+			const promise = validateEmail("user@example.com");
+			await vi.advanceTimersByTimeAsync(5000);
+			await vi.advanceTimersByTimeAsync(5000);
+			await vi.advanceTimersByTimeAsync(5000);
+
+			await expect(promise).resolves.toBe(false);
+		});
+
+		it("does not wait for the timeout when DNS responds quickly", async () => {
+			resolveMock.mockResolvedValue([
+				{ exchange: "mx.example.com", priority: 10 },
+			]);
+
+			const start = Date.now();
+			const result = await validateEmail("user@example.com", {
+				dnsTimeoutMs: 5000,
+			});
+
 			expect(result).toBe(true);
+			expect(Date.now() - start).toBeLessThan(1000);
+		});
+
+		it("applies the configured timeout independently to each record type", async () => {
+			resolveMock.mockImplementation(() => new Promise(() => {}));
+
+			const result = await validateEmail("user@example.com", {
+				dnsTimeoutMs: 20,
+			});
+
+			expect(result).toBe(false);
+			expect(resolveMock).toHaveBeenCalledTimes(3);
 		});
 	});
 
@@ -229,33 +351,6 @@ describe("validateEmail", () => {
 		it("should reject email with only domain", async () => {
 			const result = await validateEmail("gmail.com");
 			expect(result).toBe(false);
-		});
-	});
-
-	describe("real-world email providers", () => {
-		it("should validate Gmail address", async () => {
-			const result = await validateEmail("test@gmail.com");
-			expect(result).toBe(true);
-		});
-
-		it("should validate Outlook address", async () => {
-			const result = await validateEmail("test@outlook.com");
-			expect(result).toBe(true);
-		});
-
-		it("should validate Yahoo address", async () => {
-			const result = await validateEmail("test@yahoo.com");
-			expect(result).toBe(true);
-		});
-
-		it("should validate Hotmail address", async () => {
-			const result = await validateEmail("test@hotmail.com");
-			expect(result).toBe(true);
-		});
-
-		it("should validate custom domain", async () => {
-			const result = await validateEmail("test@company.com");
-			expect(result).toBe(true);
 		});
 	});
 

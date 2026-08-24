@@ -119,11 +119,33 @@ jobs:
         run: bun run all:typecheck
 
       # ------------------------------------------------------
+      # RichText's browser-mode tests (@arkyn/components) rodam
+      # sob um Chromium real via Playwright. O binário do
+      # navegador não vem com `bun install`/`playwright` (pacote
+      # npm) - precisa ser baixado à parte antes dos testes.
+      # ------------------------------------------------------
+      - name: Install Playwright Chromium browser
+        working-directory: packages/components
+        run: npx playwright install chromium
+
+      # ------------------------------------------------------
       # Executa todos os testes.
       # Caso algum falhe, o workflow para aqui.
       # ------------------------------------------------------
       - name: Run tests
         run: bun run all:test
+
+      # ------------------------------------------------------
+      # apps/development consome @arkyn/components (workspace)
+      # e serve como sandbox manual para os componentes. Sem
+      # isso no CI, uma mudança incompatível com essa app só
+      # seria percebida manualmente, depois do merge.
+      # ------------------------------------------------------
+      - name: Typecheck development app
+        run: bun run development:typecheck
+
+      - name: Build development app
+        run: bun run development:build
 
   # ==========================================================
   # @arkyn/components declara suporte a React 18 e 19 via

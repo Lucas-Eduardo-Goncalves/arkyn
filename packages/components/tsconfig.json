@@ -1,4 +1,5 @@
 {
+	"extends": "../../tsconfig.base.json",
 	"include": ["src/**/*.ts", "src/**/*.tsx"],
 	"exclude": [
 		"node_modules",
@@ -15,24 +16,7 @@
 	"compilerOptions": {
 		"outDir": "./dist",
 		"rootDir": "./src",
-		"composite": false,
-		"declaration": true,
 		"declarationDir": "./dist",
-		"declarationMap": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"inlineSources": false,
-		"isolatedModules": true,
-		"moduleResolution": "bundler",
-		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"preserveWatchOutput": true,
-		"skipLibCheck": true,
-		"jsx": "react-jsx",
-		"lib": ["DOM", "DOM.Iterable", "ES2022"],
-		"types": ["node", "@testing-library/jest-dom"],
-		"module": "ESNext",
-		"target": "ESNext"
+		"types": ["node", "@testing-library/jest-dom"]
 	}
 }

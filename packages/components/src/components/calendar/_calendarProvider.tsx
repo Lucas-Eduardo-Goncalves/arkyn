@@ -1,4 +1,11 @@
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+	createContext,
+	type ReactNode,
+	useCallback,
+	useContext,
+	useMemo,
+	useState,
+} from "react";
 import { type CalendarMatrix, ViewService } from "./_viewService";
 
 type CalendarContextProps = {
@@ -53,6 +60,9 @@ function useCalendar() {
 	return useContext(CalendarContext);
 }
 
+// Stateless — safe to share a single instance instead of instantiating on every render.
+const viewService = new ViewService();
+
 function CalendarProvider(props: CalendarProviderProps) {
 	const {
 		calendarType,
@@ -81,61 +91,100 @@ function CalendarProvider(props: CalendarProviderProps) {
 			: value
 		: rawValueDate;
 
-	const viewService = new ViewService();
+	const setValueDate = useCallback(
+		(newValue: [Date, Date]) => {
+			const normalizedValue: [Date, Date] = [
+				new Date(newValue[0]),
+				new Date(newValue[1]),
+			];
 
-	function setValueDate(value: [Date, Date]) {
-		const normalizedValue: [Date, Date] = [
-			new Date(value[0]),
-			new Date(value[1]),
-		];
+			if (onChange && calendarType === "range") {
+				onChange(normalizedValue);
+			}
 
-		if (onChange && calendarType === "range") {
-			onChange(normalizedValue);
-		}
+			if (onChange && calendarType === "single") {
+				onChange(normalizedValue[0]);
+			}
 
-		if (onChange && calendarType === "single") {
-			onChange(normalizedValue[0]);
-		}
+			rawSetValueDate(normalizedValue);
+		},
+		[calendarType, onChange],
+	);
 
-		rawSetValueDate(normalizedValue);
-	}
+	const setViewDate = useCallback(
+		(date: Date) => {
+			if (onChangeView) onChangeView(date);
+			rawSetViewDate(date);
+		},
+		[onChangeView],
+	);
 
-	function setViewDate(date: Date) {
-		if (onChangeView) onChangeView(date);
-		rawSetViewDate(date);
-	}
+	const changeDay = useCallback(
+		(day: number, month: number, year: number) =>
+			viewService.changeDay(
+				day,
+				month,
+				year,
+				calendarType,
+				valueDate,
+				setValueDate,
+				setViewDate,
+			),
+		[calendarType, valueDate, setValueDate, setViewDate],
+	);
+
+	const changeMonth = useCallback(
+		(month: number) => viewService.changeMonth(month, viewDate, setViewDate),
+		[viewDate, setViewDate],
+	);
+
+	const changeYear = useCallback(
+		(year: number) => viewService.changeYear(year, viewDate, setViewDate),
+		[viewDate, setViewDate],
+	);
+
+	const nextMonth = useCallback(
+		() => viewService.nextMonth(viewDate, setViewDate),
+		[viewDate, setViewDate],
+	);
+
+	const previousMonth = useCallback(
+		() => viewService.previousMonth(viewDate, setViewDate),
+		[viewDate, setViewDate],
+	);
+
+	const contextValue = useMemo<CalendarContextProps>(
+		() => ({
+			valueDate,
+			viewDate,
+			currentDate: viewDate.toLocaleDateString(language).slice(3),
+			currentDay: viewService.currentDay(viewDate),
+			currentMonth: viewService.currentMonth(viewDate),
+			currentYear: viewService.currentYear(viewDate),
+			listWeek: viewService.listWeek(language),
+			listMonths: viewService.listMonths(viewDate, language),
+			listYears: viewService.listYears(100),
+			listMatrix: viewService.listMatrix(viewDate, valueDate),
+			changeDay,
+			changeMonth,
+			changeYear,
+			nextMonth,
+			previousMonth,
+		}),
+		[
+			valueDate,
+			viewDate,
+			language,
+			changeDay,
+			changeMonth,
+			changeYear,
+			nextMonth,
+			previousMonth,
+		],
+	);
 
 	return (
-		<CalendarContext.Provider
-			value={{
-				valueDate,
-				viewDate,
-				currentDate: viewDate.toLocaleDateString(language).slice(3),
-				currentDay: viewService.currentDay(viewDate),
-				currentMonth: viewService.currentMonth(viewDate),
-				currentYear: viewService.currentYear(viewDate),
-				listWeek: viewService.listWeek(language),
-				listMonths: viewService.listMonths(viewDate, language),
-				listYears: viewService.listYears(100),
-				listMatrix: viewService.listMatrix(viewDate, valueDate),
-				changeDay: (day, month, year) =>
-					viewService.changeDay(
-						day,
-						month,
-						year,
-						calendarType,
-						valueDate,
-						setValueDate,
-						setViewDate,
-					),
-				changeMonth: (month) =>
-					viewService.changeMonth(month, viewDate, setViewDate),
-				changeYear: (year) =>
-					viewService.changeYear(year, viewDate, setViewDate),
-				nextMonth: () => viewService.nextMonth(viewDate, setViewDate),
-				previousMonth: () => viewService.previousMonth(viewDate, setViewDate),
-			}}
-		>
+		<CalendarContext.Provider value={contextValue}>
 			{children}
 		</CalendarContext.Provider>
 	);

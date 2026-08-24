@@ -1,6 +1,6 @@
 {
   "name": "@arkyn/cli",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "type": "module",
   "private": false,
   "license": "Apache-2.0",
@@ -43,10 +43,10 @@
     "prebuild": "rm -rf dist",
     "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
     "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ./generate-version.ts beta",
-    "release:patch": "bun ./generate-version.ts patch",
-    "release:minor": "bun ./generate-version.ts minor",
-    "release:major": "bun ./generate-version.ts major",
+    "release:beta": "bun ../../scripts/generate-version.ts beta",
+    "release:patch": "bun ../../scripts/generate-version.ts patch",
+    "release:minor": "bun ../../scripts/generate-version.ts minor",
+    "release:major": "bun ../../scripts/generate-version.ts major",
     "test": "bunx vitest --config vitest.config.ts --run",
     "test:watch": "bunx vitest --config vitest.config.ts --watch",
     "typecheck": "bunx tsc --project tsconfig.json --noEmit"

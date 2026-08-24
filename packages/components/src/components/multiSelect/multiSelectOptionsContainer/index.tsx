@@ -1,12 +1,7 @@
 import { Search } from "lucide-react";
-import {
-	type ChangeEvent,
-	type ReactNode,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { type ChangeEvent, type ReactNode, useRef } from "react";
 
+import { useFlipPosition } from "../../../hooks/useFlipPosition";
 import { useScrollLock } from "../../../hooks/useScrollLock";
 import { Input } from "../../input";
 
@@ -25,37 +20,9 @@ function MultiSelectOptionsContainer(props: MultiSelectOptionsContainerProps) {
 	const { children, id, isFocused, isSearchable, search, onSearch } = props;
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [position, setPosition] = useState<"bottom" | "top">("bottom");
+	const position = useFlipPosition(containerRef, isFocused, 300);
 
 	useScrollLock(isFocused);
-
-	useEffect(() => {
-		if (!isFocused) return;
-
-		const checkContainerPosition = () => {
-			if (!containerRef.current) return;
-
-			const parentElement = containerRef.current.parentElement;
-			if (!parentElement) return;
-
-			const parentRect = parentElement.getBoundingClientRect();
-			const viewportHeight = window.innerHeight;
-
-			const estimatedContainerHeight = 300;
-			const spaceBelow = viewportHeight - parentRect.bottom;
-
-			if (
-				spaceBelow < estimatedContainerHeight &&
-				parentRect.top > estimatedContainerHeight
-			) {
-				setPosition("top");
-			} else {
-				setPosition("bottom");
-			}
-		};
-
-		checkContainerPosition();
-	}, [isFocused]);
 
 	function handleSearch(e: ChangeEvent<HTMLInputElement>) {
 		if (!isSearchable) return;

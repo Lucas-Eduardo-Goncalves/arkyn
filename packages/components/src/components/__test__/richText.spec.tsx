@@ -142,75 +142,14 @@ describe("RichText", () => {
 	});
 
 	describe("typing behaviour", () => {
-		// jsdom doesn't implement native contenteditable text editing, and
-		// Slate relies on that native behavior (via `beforeinput` + Selection
-		// APIs, including `InputEvent.getTargetRanges()`, which jsdom also
-		// lacks) to turn keystrokes into document changes. `user.type()` ends
-		// up inserting raw text as a stray DOM node outside Slate's own tree,
-		// so `onChange` is never invoked, confirmed by inspecting the
-		// resulting DOM and the mock call count directly. These 4 scenarios
-		// need real-browser coverage (e.g. Playwright) instead of jsdom.
-		it.skip("should fire onChange with the updated Slate value when typing", async () => {
-			const user = userEvent.setup();
-			const handleChange = vi.fn();
-
-			render(<RichText name="content" onChange={handleChange} />);
-
-			const editable = screen.getByRole("textbox");
-			await user.click(editable);
-			await user.type(editable, "Hi");
-
-			expect(handleChange).toHaveBeenCalled();
-			const lastCallValue = handleChange.mock.calls.at(-1)?.[0];
-			expect(JSON.stringify(lastCallValue)).toContain("Hi");
-		});
-
-		it.skip("should update the hidden content input value as the user types", async () => {
-			const user = userEvent.setup();
-
-			const { container } = render(<RichText name="content" />);
-
-			const editable = screen.getByRole("textbox");
-			await user.click(editable);
-			await user.type(editable, "Hi");
-
-			const hiddenInput = getHiddenInput(container, "content");
-			expect(hiddenInput.value).toContain("Hi");
-		});
-
-		it.skip("should call onChangeCharactersCount on every keystroke with the current count", async () => {
-			const user = userEvent.setup();
-			const handleCount = vi.fn();
-
-			render(<RichText name="content" onChangeCharactersCount={handleCount} />);
-
-			const editable = screen.getByRole("textbox");
-			await user.click(editable);
-			await user.keyboard("a");
-			await user.keyboard("b");
-			await user.keyboard("c");
-
-			expect(handleCount).toHaveBeenCalledTimes(3);
-			expect(handleCount).toHaveBeenNthCalledWith(1, 1);
-			expect(handleCount).toHaveBeenNthCalledWith(2, 2);
-			expect(handleCount).toHaveBeenNthCalledWith(3, 3);
-		});
-
-		it.skip("should update the character count hidden input as the user types", async () => {
-			const user = userEvent.setup();
-
-			const { container } = render(<RichText name="content" />);
-
-			const editable = screen.getByRole("textbox");
-			await user.click(editable);
-			await user.keyboard("a");
-			await user.keyboard("b");
-			await user.keyboard("c");
-
-			const hiddenCountInput = getHiddenInput(container, "contentCount");
-			expect(hiddenCountInput.value).toBe("3");
-		});
-
+		// Real typing/selection coverage for this component (onChange, hidden
+		// input value, and character count updates as the user types) lives in
+		// `richText.browser.spec.tsx`, which runs under Vitest Browser Mode
+		// against real Chromium. jsdom doesn't implement native contenteditable
+		// text editing - Slate relies on real `beforeinput` + Selection APIs
+		// (including `InputEvent.getTargetRanges()`) to turn keystrokes into
+		// document changes, so `user.type()`/`user.keyboard()` never reach
+		// Slate's `onChange` here.
 		it("should not call onChange or onChangeCharactersCount without user interaction", () => {
 			const handleChange = vi.fn();
 			const handleCount = vi.fn();
@@ -275,49 +214,10 @@ describe("RichText", () => {
 			expect(hiddenInput.value).not.toContain("abcdef");
 		});
 
-		// Same jsdom/Slate contenteditable limitation as the "typing behaviour"
-		// tests above, `user.keyboard()` never reaches Slate's onChange.
-		it.skip("should still call onChangeCharactersCount even when the character limit is enforced", async () => {
-			const user = userEvent.setup();
-			const handleCount = vi.fn();
-			const value = JSON.stringify([
-				{ type: "paragraph", children: [{ text: "abcde" }] },
-			]);
-
-			render(
-				<RichText
-					name="content"
-					defaultValue={value}
-					maxLimit={5}
-					enforceCharacterLimit
-					onChangeCharactersCount={handleCount}
-				/>,
-			);
-
-			const editable = screen.getByRole("textbox");
-			await user.click(editable);
-			await user.keyboard("f");
-
-			expect(handleCount).toHaveBeenCalledWith(6);
-		});
-
-		it.skip("should allow typing past the default maxLimit when enforceCharacterLimit is false", async () => {
-			const user = userEvent.setup();
-			const value = JSON.stringify([
-				{ type: "paragraph", children: [{ text: "abcde" }] },
-			]);
-
-			const { container } = render(
-				<RichText name="content" defaultValue={value} maxLimit={5} />,
-			);
-
-			const editable = screen.getByRole("textbox");
-			await user.click(editable);
-			await user.keyboard("f");
-
-			const hiddenInput = getHiddenInput(container, "content");
-			expect(hiddenInput.value).toContain("abcdef");
-		});
+		// Real coverage for `onChangeCharactersCount` under an enforced limit,
+		// and for typing past `maxLimit` when the limit isn't enforced, lives in
+		// `richText.browser.spec.tsx` (same jsdom/Slate contenteditable
+		// limitation as the "typing behaviour" tests above).
 	});
 
 	describe("hiddenButtons prop", () => {

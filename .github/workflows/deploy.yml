@@ -48,7 +48,7 @@ jobs:
       # Garante o ambiente Node.js limpo na máquina.
       # ------------------------------------------------------
       - name: Setup Node.js (NPM Registry Auth)
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v7
         with:
           node-version: 26
           registry-url: https://registry.npmjs.org

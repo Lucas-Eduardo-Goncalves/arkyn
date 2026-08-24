@@ -123,10 +123,18 @@ jobs:
       # sob um Chromium real via Playwright. O binário do
       # navegador não vem com `bun install`/`playwright` (pacote
       # npm) - precisa ser baixado à parte antes dos testes.
+      #
+      # Usa `bunx` (não `npx`) para garantir que resolve o mesmo
+      # `playwright` já instalado pelo workspace (evita qualquer
+      # divergência de versão entre o binário do CLI e o pacote
+      # usado em tempo de execução pelos testes). `--with-deps`
+      # instala também as bibliotecas de sistema exigidas pelo
+      # Chromium no runner Ubuntu, e ambos os alvos são listados
+      # explicitamente para não depender do empacotamento padrão.
       # ------------------------------------------------------
       - name: Install Playwright Chromium browser
         working-directory: packages/components
-        run: npx playwright install chromium
+        run: bunx playwright install --with-deps chromium chromium-headless-shell
 
       # ------------------------------------------------------
       # Executa todos os testes.

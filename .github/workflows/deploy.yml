@@ -127,6 +127,36 @@ jobs:
         run: bun run all:typecheck
 
       # ------------------------------------------------------
+      # RichText's browser-mode tests (@arkyn/components) rodam
+      # sob um Chromium real via Playwright. O binário do
+      # navegador não vem com `bun install`/`playwright` (pacote
+      # npm) - precisa ser baixado à parte antes dos testes.
+      #
+      # Usa `bunx` (não `npx`) para garantir que resolve o mesmo
+      # `playwright` já instalado pelo workspace (evita qualquer
+      # divergência de versão entre o binário do CLI e o pacote
+      # usado em tempo de execução pelos testes). `--with-deps`
+      # instala também as bibliotecas de sistema exigidas pelo
+      # Chromium no runner Ubuntu, e ambos os alvos são listados
+      # explicitamente para não depender do empacotamento padrão.
+      #
+      # O download do binário do CDN da Playwright já falhou de
+      # forma intermitente aqui (arquivo baixado parcialmente/
+      # ausente, só percebido depois, quando os testes tentam
+      # abrir o browser). O comando é idempotente, então tentamos
+      # de novo algumas vezes antes de desistir.
+      # ------------------------------------------------------
+      - name: Install Playwright Chromium browser
+        working-directory: packages/components
+        run: |
+          for attempt in 1 2 3; do
+            bunx playwright install --with-deps chromium chromium-headless-shell && exit 0
+            echo "Playwright install failed (attempt $attempt/3), retrying..."
+            sleep 10
+          done
+          exit 1
+
+      # ------------------------------------------------------
       # Executa todos os testes.
       # Caso algum falhe, o workflow para aqui.
       # ------------------------------------------------------

@@ -1,0 +1,282 @@
+{
+  "name": "@arkyn/ui",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "private": false,
+  "license": "Apache-2.0",
+  "author": "Arkyn | Lucas Gonçalves",
+  "description": "Pre-built sidebar, header, and admin layout components for building React admin panels and CRUD dashboards faster.",
+  "keywords": [
+    "react",
+    "remix",
+    "next",
+    "react-router",
+    "admin",
+    "dashboard",
+    "sidebar",
+    "header",
+    "layout",
+    "crud",
+    "typescript",
+    "design-system"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.0.0"
+  },
+  "homepage": "https://docs.arkyn.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
+    "directory": "packages/ui"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "AGENTS.md",
+    "LICENSE.txt",
+    "styles.d.ts"
+  ],
+  "scripts": {
+    "audit": "bun audit",
+    "build": "bunx vite build && bun ./generate-component-styles.ts && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ./generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
+    "prebuild": "rm -rf dist",
+    "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
+    "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
+    "release:beta": "bun ../../scripts/generate-version.ts beta",
+    "release:patch": "bun ../../scripts/generate-version.ts patch",
+    "release:minor": "bun ../../scripts/generate-version.ts minor",
+    "release:major": "bun ../../scripts/generate-version.ts major",
+    "test": "bunx vitest --config vitest.config.ts --run",
+    "test:watch": "bunx vitest --config vitest.config.ts --watch",
+    "typecheck": "bunx tsc --project tsconfig.json --noEmit"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "dependencies": {},
+  "peerDependencies": {
+    "lucide-react": ">=1.14.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "jsdom": "^30.0.1",
+    "lucide-react": "catalog:",
+    "postcss": "^8.5.16",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./styles": {
+      "import": "./dist/style.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/style.css"
+    },
+    "./adminLayoutContent": {
+      "import": "./dist/modules/components/adminLayout/adminLayoutContent/index.js",
+      "types": "./dist/components/adminLayout/adminLayoutContent/index.d.ts",
+      "default": "./dist/modules/components/adminLayout/adminLayoutContent/index.js"
+    },
+    "./adminLayoutContent.css": {
+      "import": "./dist/modules/components/adminLayout/adminLayoutContent/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/adminLayout/adminLayoutContent/styles.css"
+    },
+    "./adminLayoutRoot": {
+      "import": "./dist/modules/components/adminLayout/adminLayoutRoot/index.js",
+      "types": "./dist/components/adminLayout/adminLayoutRoot/index.d.ts",
+      "default": "./dist/modules/components/adminLayout/adminLayoutRoot/index.js"
+    },
+    "./adminLayoutRoot.css": {
+      "import": "./dist/modules/components/adminLayout/adminLayoutRoot/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/adminLayout/adminLayoutRoot/styles.css"
+    },
+    "./headerActions": {
+      "import": "./dist/modules/components/header/headerActions/index.js",
+      "types": "./dist/components/header/headerActions/index.d.ts",
+      "default": "./dist/modules/components/header/headerActions/index.js"
+    },
+    "./headerActions.css": {
+      "import": "./dist/modules/components/header/headerActions/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/header/headerActions/styles.css"
+    },
+    "./headerRoot": {
+      "import": "./dist/modules/components/header/headerRoot/index.js",
+      "types": "./dist/components/header/headerRoot/index.d.ts",
+      "default": "./dist/modules/components/header/headerRoot/index.js"
+    },
+    "./headerRoot.css": {
+      "import": "./dist/modules/components/header/headerRoot/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/header/headerRoot/styles.css"
+    },
+    "./headerTitle": {
+      "import": "./dist/modules/components/header/headerTitle/index.js",
+      "types": "./dist/components/header/headerTitle/index.d.ts",
+      "default": "./dist/modules/components/header/headerTitle/index.js"
+    },
+    "./headerTitle.css": {
+      "import": "./dist/modules/components/header/headerTitle/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/header/headerTitle/styles.css"
+    },
+    "./headerUser": {
+      "import": "./dist/modules/components/header/headerUser/index.js",
+      "types": "./dist/components/header/headerUser/index.d.ts",
+      "default": "./dist/modules/components/header/headerUser/index.js"
+    },
+    "./headerUser.css": {
+      "import": "./dist/modules/components/header/headerUser/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/header/headerUser/styles.css"
+    },
+    "./sidebarFooter": {
+      "import": "./dist/modules/components/sidebar/sidebarFooter/index.js",
+      "types": "./dist/components/sidebar/sidebarFooter/index.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarFooter/index.js"
+    },
+    "./sidebarFooter.css": {
+      "import": "./dist/modules/components/sidebar/sidebarFooter/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarFooter/styles.css"
+    },
+    "./sidebarGroup": {
+      "import": "./dist/modules/components/sidebar/sidebarGroup/index.js",
+      "types": "./dist/components/sidebar/sidebarGroup/index.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarGroup/index.js"
+    },
+    "./sidebarGroup.css": {
+      "import": "./dist/modules/components/sidebar/sidebarGroup/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarGroup/styles.css"
+    },
+    "./sidebarHeader": {
+      "import": "./dist/modules/components/sidebar/sidebarHeader/index.js",
+      "types": "./dist/components/sidebar/sidebarHeader/index.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarHeader/index.js"
+    },
+    "./sidebarHeader.css": {
+      "import": "./dist/modules/components/sidebar/sidebarHeader/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarHeader/styles.css"
+    },
+    "./sidebarLink": {
+      "import": "./dist/modules/components/sidebar/sidebarLink/index.js",
+      "types": "./dist/components/sidebar/sidebarLink/index.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarLink/index.js"
+    },
+    "./sidebarLink.css": {
+      "import": "./dist/modules/components/sidebar/sidebarLink/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarLink/styles.css"
+    },
+    "./sidebarRoot": {
+      "import": "./dist/modules/components/sidebar/sidebarRoot/index.js",
+      "types": "./dist/components/sidebar/sidebarRoot/index.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarRoot/index.js"
+    },
+    "./sidebarRoot.css": {
+      "import": "./dist/modules/components/sidebar/sidebarRoot/styles.css",
+      "types": "./styles.d.ts",
+      "default": "./dist/modules/components/sidebar/sidebarRoot/styles.css"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "adminLayoutContent": [
+        "./dist/components/adminLayout/adminLayoutContent/index.d.ts"
+      ],
+      "adminLayoutContent.css": [
+        "./styles.d.ts"
+      ],
+      "adminLayoutRoot": [
+        "./dist/components/adminLayout/adminLayoutRoot/index.d.ts"
+      ],
+      "adminLayoutRoot.css": [
+        "./styles.d.ts"
+      ],
+      "headerActions": [
+        "./dist/components/header/headerActions/index.d.ts"
+      ],
+      "headerActions.css": [
+        "./styles.d.ts"
+      ],
+      "headerRoot": [
+        "./dist/components/header/headerRoot/index.d.ts"
+      ],
+      "headerRoot.css": [
+        "./styles.d.ts"
+      ],
+      "headerTitle": [
+        "./dist/components/header/headerTitle/index.d.ts"
+      ],
+      "headerTitle.css": [
+        "./styles.d.ts"
+      ],
+      "headerUser": [
+        "./dist/components/header/headerUser/index.d.ts"
+      ],
+      "headerUser.css": [
+        "./styles.d.ts"
+      ],
+      "sidebarFooter": [
+        "./dist/components/sidebar/sidebarFooter/index.d.ts"
+      ],
+      "sidebarFooter.css": [
+        "./styles.d.ts"
+      ],
+      "sidebarGroup": [
+        "./dist/components/sidebar/sidebarGroup/index.d.ts"
+      ],
+      "sidebarGroup.css": [
+        "./styles.d.ts"
+      ],
+      "sidebarHeader": [
+        "./dist/components/sidebar/sidebarHeader/index.d.ts"
+      ],
+      "sidebarHeader.css": [
+        "./styles.d.ts"
+      ],
+      "sidebarLink": [
+        "./dist/components/sidebar/sidebarLink/index.d.ts"
+      ],
+      "sidebarLink.css": [
+        "./styles.d.ts"
+      ],
+      "sidebarRoot": [
+        "./dist/components/sidebar/sidebarRoot/index.d.ts"
+      ],
+      "sidebarRoot.css": [
+        "./styles.d.ts"
+      ],
+      "styles": [
+        "./styles.d.ts"
+      ]
+    }
+  }
+}

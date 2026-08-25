@@ -1,0 +1,8 @@
+.arkynSidebarFooter {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 16px;
+	margin-top: auto;
+	border-top: 1px solid var(--border, #e5e7eb);
+}

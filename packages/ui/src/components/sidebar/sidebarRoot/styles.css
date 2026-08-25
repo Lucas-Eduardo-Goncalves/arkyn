@@ -1,0 +1,15 @@
+.arkynSidebarRoot {
+	display: flex;
+	flex-direction: column;
+	width: 260px;
+	height: 100vh;
+	flex-shrink: 0;
+	background: var(--background-foreground, #ffffff);
+	border-right: 1px solid var(--border, #e5e7eb);
+	transition: width 0.2s ease;
+	overflow-x: hidden;
+}
+
+.arkynSidebarRoot.collapsed {
+	width: 72px;
+}

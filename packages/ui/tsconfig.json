@@ -1,0 +1,22 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"documentation/**/*",
+		"vite.config.ts",
+		"vitest.config.ts",
+		"**/*.config.ts",
+		"**/*.test.ts",
+		"**/*.test.tsx",
+		"**/*.spec.ts",
+		"**/*.spec.tsx"
+	],
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"declarationDir": "./dist",
+		"types": ["node", "@testing-library/jest-dom"]
+	}
+}

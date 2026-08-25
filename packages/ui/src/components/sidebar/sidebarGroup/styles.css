@@ -1,0 +1,15 @@
+.arkynSidebarGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 12px 8px;
+}
+
+.arkynSidebarGroupLabel {
+	padding: 0 8px 4px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--text-muted, #6b7280);
+}

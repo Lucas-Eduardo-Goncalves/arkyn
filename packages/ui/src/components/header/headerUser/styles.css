@@ -1,0 +1,38 @@
+.arkynHeaderUser {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 10px 6px 6px;
+	border: none;
+	border-radius: 999px;
+	background: transparent;
+	cursor: pointer;
+}
+
+.arkynHeaderUser:hover {
+	background: var(--background-underground, #f3f4f6);
+}
+
+.arkynHeaderUserAvatar,
+.arkynHeaderUserAvatarFallback {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.arkynHeaderUserAvatarFallback {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--spotlight-primary, #eef2ff);
+	color: var(--spotlight-primary-foreground, #4338ca);
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.arkynHeaderUserName {
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--text-body, #374151);
+}

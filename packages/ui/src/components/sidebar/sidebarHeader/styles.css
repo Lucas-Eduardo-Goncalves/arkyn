@@ -1,0 +1,34 @@
+.arkynSidebarHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 16px;
+	border-bottom: 1px solid var(--border, #e5e7eb);
+}
+
+.arkynSidebarHeaderBrand {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	overflow: hidden;
+	color: var(--text-heading, #111827);
+}
+
+.arkynSidebarHeaderToggleButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 32px;
+	height: 32px;
+	border: none;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--text-muted, #6b7280);
+	cursor: pointer;
+}
+
+.arkynSidebarHeaderToggleButton:hover {
+	background: var(--background-underground, #f3f4f6);
+}

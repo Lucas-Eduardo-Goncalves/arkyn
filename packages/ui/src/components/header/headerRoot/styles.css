@@ -1,0 +1,9 @@
+.arkynHeaderRoot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 16px 24px;
+	background: var(--background-foreground, #ffffff);
+	border-bottom: 1px solid var(--border, #e5e7eb);
+}

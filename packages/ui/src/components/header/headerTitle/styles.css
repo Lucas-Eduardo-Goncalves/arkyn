@@ -1,0 +1,17 @@
+.arkynHeaderTitle {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.arkynHeaderTitleBreadcrumb {
+	font-size: 13px;
+	color: var(--text-muted, #6b7280);
+}
+
+.arkynHeaderTitleHeading {
+	margin: 0;
+	font-size: 20px;
+	font-weight: 600;
+	color: var(--text-heading, #111827);
+}

@@ -1,348 +1,348 @@
 {
-  "name": "@arkyn/server",
-  "version": "3.0.10",
-  "author": "Arkyn | Lucas Gonçalves",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "license": "Apache-2.0",
-  "description": "Comprehensive server-side utilities for building robust backend applications, featuring HTTP response helpers, error handlers, request utilities, and API configurations.",
-  "keywords": [
-    "server",
-    "http",
-    "api",
-    "utilities",
-    "error-handling",
-    "validation",
-    "remix",
-    "typescript",
-    "zod"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "bun": ">=1.0.0"
-  },
-  "homepage": "https://docs.arkyn.dev/docs/server/introduction",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
-    "directory": "packages/server"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "AGENTS.md",
-    "LICENSE.txt"
-  ],
-  "sideEffects": false,
-  "dependencies": {
-    "@arkyn/shared": "^3.0.2",
-    "@arkyn/templates": "^3.0.2"
-  },
-  "scripts": {
-    "audit": "bun audit",
-    "build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
-    "prebuild": "rm -rf dist",
-    "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
-    "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ../../scripts/generate-version.ts beta",
-    "release:patch": "bun ../../scripts/generate-version.ts patch",
-    "release:minor": "bun ../../scripts/generate-version.ts minor",
-    "release:major": "bun ../../scripts/generate-version.ts major",
-    "test": "bunx vitest --config vitest.config.ts --run",
-    "test:watch": "bunx vitest --config vitest.config.ts --watch",
-    "typecheck": "bunx tsc --project tsconfig.json --noEmit"
-  },
-  "peerDependencies": {
-    "libphonenumber-js": ">=1.13.7",
-    "zod": ">=4.4.3"
-  },
-  "devDependencies": {
-    "@types/bun": "catalog:",
-    "@types/node": "catalog:",
-    "libphonenumber-js": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:",
-    "zod": "catalog:"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./apiService": {
-      "import": "./dist/modules/services/apiService.js",
-      "types": "./dist/services/apiService.d.ts",
-      "default": "./dist/modules/services/apiService.js"
-    },
-    "./badGateway": {
-      "import": "./dist/modules/http/badResponses/badGateway.js",
-      "types": "./dist/http/badResponses/badGateway.d.ts",
-      "default": "./dist/modules/http/badResponses/badGateway.js"
-    },
-    "./badRequest": {
-      "import": "./dist/modules/http/badResponses/badRequest.js",
-      "types": "./dist/http/badResponses/badRequest.d.ts",
-      "default": "./dist/modules/http/badResponses/badRequest.js"
-    },
-    "./conflict": {
-      "import": "./dist/modules/http/badResponses/conflict.js",
-      "types": "./dist/http/badResponses/conflict.d.ts",
-      "default": "./dist/modules/http/badResponses/conflict.js"
-    },
-    "./created": {
-      "import": "./dist/modules/http/successResponses/created.js",
-      "types": "./dist/http/successResponses/created.d.ts",
-      "default": "./dist/modules/http/successResponses/created.js"
-    },
-    "./debugService": {
-      "import": "./dist/modules/services/debugService.js",
-      "types": "./dist/services/debugService.d.ts",
-      "default": "./dist/modules/services/debugService.js"
-    },
-    "./decodeRequestBody": {
-      "import": "./dist/modules/utilities/decodeRequestBody.js",
-      "types": "./dist/utilities/decodeRequestBody.d.ts",
-      "default": "./dist/modules/utilities/decodeRequestBody.js"
-    },
-    "./decodeRequestErrorMessage": {
-      "import": "./dist/modules/utilities/decodeRequestErrorMessage.js",
-      "types": "./dist/utilities/decodeRequestErrorMessage.d.ts",
-      "default": "./dist/modules/utilities/decodeRequestErrorMessage.js"
-    },
-    "./errorHandler": {
-      "import": "./dist/modules/utilities/errorHandler.js",
-      "types": "./dist/utilities/errorHandler.d.ts",
-      "default": "./dist/modules/utilities/errorHandler.js"
-    },
-    "./flushDebugLogs": {
-      "import": "./dist/modules/utilities/flushDebugLogs.js",
-      "types": "./dist/utilities/flushDebugLogs.d.ts",
-      "default": "./dist/modules/utilities/flushDebugLogs.js"
-    },
-    "./forbidden": {
-      "import": "./dist/modules/http/badResponses/forbidden.js",
-      "types": "./dist/http/badResponses/forbidden.d.ts",
-      "default": "./dist/modules/http/badResponses/forbidden.js"
-    },
-    "./formAsyncParse": {
-      "import": "./dist/modules/utilities/formAsyncParse.js",
-      "types": "./dist/utilities/formAsyncParse.d.ts",
-      "default": "./dist/modules/utilities/formAsyncParse.js"
-    },
-    "./formParse": {
-      "import": "./dist/modules/utilities/formParse.js",
-      "types": "./dist/utilities/formParse.d.ts",
-      "default": "./dist/modules/utilities/formParse.js"
-    },
-    "./found": {
-      "import": "./dist/modules/http/successResponses/found.js",
-      "types": "./dist/http/successResponses/found.d.ts",
-      "default": "./dist/modules/http/successResponses/found.js"
-    },
-    "./getScopedParams": {
-      "import": "./dist/modules/utilities/getScopedParams.js",
-      "types": "./dist/utilities/getScopedParams.d.ts",
-      "default": "./dist/modules/utilities/getScopedParams.js"
-    },
-    "./logService": {
-      "import": "./dist/modules/services/logService.js",
-      "types": "./dist/services/logService.d.ts",
-      "default": "./dist/modules/services/logService.js"
-    },
-    "./noContent": {
-      "import": "./dist/modules/http/successResponses/noContent.js",
-      "types": "./dist/http/successResponses/noContent.d.ts",
-      "default": "./dist/modules/http/successResponses/noContent.js"
-    },
-    "./notFound": {
-      "import": "./dist/modules/http/badResponses/notFound.js",
-      "types": "./dist/http/badResponses/notFound.d.ts",
-      "default": "./dist/modules/http/badResponses/notFound.js"
-    },
-    "./notImplemented": {
-      "import": "./dist/modules/http/badResponses/notImplemented.js",
-      "types": "./dist/http/badResponses/notImplemented.d.ts",
-      "default": "./dist/modules/http/badResponses/notImplemented.js"
-    },
-    "./schemaValidator": {
-      "import": "./dist/modules/utilities/schemaValidator.js",
-      "types": "./dist/utilities/schemaValidator.d.ts",
-      "default": "./dist/modules/utilities/schemaValidator.js"
-    },
-    "./serverError": {
-      "import": "./dist/modules/http/badResponses/serverError.js",
-      "types": "./dist/http/badResponses/serverError.d.ts",
-      "default": "./dist/modules/http/badResponses/serverError.js"
-    },
-    "./success": {
-      "import": "./dist/modules/http/successResponses/success.js",
-      "types": "./dist/http/successResponses/success.d.ts",
-      "default": "./dist/modules/http/successResponses/success.js"
-    },
-    "./unauthorized": {
-      "import": "./dist/modules/http/badResponses/unauthorized.js",
-      "types": "./dist/http/badResponses/unauthorized.d.ts",
-      "default": "./dist/modules/http/badResponses/unauthorized.js"
-    },
-    "./unprocessableEntity": {
-      "import": "./dist/modules/http/badResponses/unprocessableEntity.js",
-      "types": "./dist/http/badResponses/unprocessableEntity.d.ts",
-      "default": "./dist/modules/http/badResponses/unprocessableEntity.js"
-    },
-    "./updated": {
-      "import": "./dist/modules/http/successResponses/updated.js",
-      "types": "./dist/http/successResponses/updated.d.ts",
-      "default": "./dist/modules/http/successResponses/updated.js"
-    },
-    "./validateCep": {
-      "import": "./dist/modules/validations/validateCep.js",
-      "types": "./dist/validations/validateCep.d.ts",
-      "default": "./dist/modules/validations/validateCep.js"
-    },
-    "./validateCnpj": {
-      "import": "./dist/modules/validations/validateCnpj.js",
-      "types": "./dist/validations/validateCnpj.d.ts",
-      "default": "./dist/modules/validations/validateCnpj.js"
-    },
-    "./validateCpf": {
-      "import": "./dist/modules/validations/validateCpf.js",
-      "types": "./dist/validations/validateCpf.d.ts",
-      "default": "./dist/modules/validations/validateCpf.js"
-    },
-    "./validateDate": {
-      "import": "./dist/modules/validations/validateDate.js",
-      "types": "./dist/validations/validateDate.d.ts",
-      "default": "./dist/modules/validations/validateDate.js"
-    },
-    "./validateEmail": {
-      "import": "./dist/modules/validations/validateEmail.js",
-      "types": "./dist/validations/validateEmail.d.ts",
-      "default": "./dist/modules/validations/validateEmail.js"
-    },
-    "./validatePassword": {
-      "import": "./dist/modules/validations/validatePassword.js",
-      "types": "./dist/validations/validatePassword.d.ts",
-      "default": "./dist/modules/validations/validatePassword.js"
-    },
-    "./validatePhone": {
-      "import": "./dist/modules/validations/validatePhone.js",
-      "types": "./dist/validations/validatePhone.d.ts",
-      "default": "./dist/modules/validations/validatePhone.js"
-    },
-    "./validateRg": {
-      "import": "./dist/modules/validations/validateRg.js",
-      "types": "./dist/validations/validateRg.d.ts",
-      "default": "./dist/modules/validations/validateRg.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "apiService": [
-        "./dist/services/apiService.d.ts"
-      ],
-      "badGateway": [
-        "./dist/http/badResponses/badGateway.d.ts"
-      ],
-      "badRequest": [
-        "./dist/http/badResponses/badRequest.d.ts"
-      ],
-      "conflict": [
-        "./dist/http/badResponses/conflict.d.ts"
-      ],
-      "created": [
-        "./dist/http/successResponses/created.d.ts"
-      ],
-      "debugService": [
-        "./dist/services/debugService.d.ts"
-      ],
-      "decodeRequestBody": [
-        "./dist/utilities/decodeRequestBody.d.ts"
-      ],
-      "decodeRequestErrorMessage": [
-        "./dist/utilities/decodeRequestErrorMessage.d.ts"
-      ],
-      "errorHandler": [
-        "./dist/utilities/errorHandler.d.ts"
-      ],
-      "flushDebugLogs": [
-        "./dist/utilities/flushDebugLogs.d.ts"
-      ],
-      "forbidden": [
-        "./dist/http/badResponses/forbidden.d.ts"
-      ],
-      "formAsyncParse": [
-        "./dist/utilities/formAsyncParse.d.ts"
-      ],
-      "formParse": [
-        "./dist/utilities/formParse.d.ts"
-      ],
-      "found": [
-        "./dist/http/successResponses/found.d.ts"
-      ],
-      "getScopedParams": [
-        "./dist/utilities/getScopedParams.d.ts"
-      ],
-      "logService": [
-        "./dist/services/logService.d.ts"
-      ],
-      "noContent": [
-        "./dist/http/successResponses/noContent.d.ts"
-      ],
-      "notFound": [
-        "./dist/http/badResponses/notFound.d.ts"
-      ],
-      "notImplemented": [
-        "./dist/http/badResponses/notImplemented.d.ts"
-      ],
-      "schemaValidator": [
-        "./dist/utilities/schemaValidator.d.ts"
-      ],
-      "serverError": [
-        "./dist/http/badResponses/serverError.d.ts"
-      ],
-      "success": [
-        "./dist/http/successResponses/success.d.ts"
-      ],
-      "unauthorized": [
-        "./dist/http/badResponses/unauthorized.d.ts"
-      ],
-      "unprocessableEntity": [
-        "./dist/http/badResponses/unprocessableEntity.d.ts"
-      ],
-      "updated": [
-        "./dist/http/successResponses/updated.d.ts"
-      ],
-      "validateCep": [
-        "./dist/validations/validateCep.d.ts"
-      ],
-      "validateCnpj": [
-        "./dist/validations/validateCnpj.d.ts"
-      ],
-      "validateCpf": [
-        "./dist/validations/validateCpf.d.ts"
-      ],
-      "validateDate": [
-        "./dist/validations/validateDate.d.ts"
-      ],
-      "validateEmail": [
-        "./dist/validations/validateEmail.d.ts"
-      ],
-      "validatePassword": [
-        "./dist/validations/validatePassword.d.ts"
-      ],
-      "validatePhone": [
-        "./dist/validations/validatePhone.d.ts"
-      ],
-      "validateRg": [
-        "./dist/validations/validateRg.d.ts"
-      ]
-    }
-  }
+	"name": "@arkyn/server",
+	"version": "3.0.11",
+	"author": "Arkyn | Lucas Gonçalves",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"type": "module",
+	"types": "./dist/index.d.ts",
+	"license": "Apache-2.0",
+	"description": "Comprehensive server-side utilities for building robust backend applications, featuring HTTP response helpers, error handlers, request utilities, and API configurations.",
+	"keywords": [
+		"server",
+		"http",
+		"api",
+		"utilities",
+		"error-handling",
+		"validation",
+		"remix",
+		"typescript",
+		"zod"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"bun": ">=1.0.0"
+	},
+	"homepage": "https://docs.arkyn.dev/docs/server/introduction",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
+		"directory": "packages/server"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"AGENTS.md",
+		"LICENSE.txt"
+	],
+	"sideEffects": false,
+	"dependencies": {
+		"@arkyn/shared": "^3.0.2",
+		"@arkyn/templates": "^3.0.2"
+	},
+	"scripts": {
+		"audit": "bun audit",
+		"build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
+		"prebuild": "rm -rf dist",
+		"publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
+		"publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
+		"release:beta": "bun ../../scripts/generate-version.ts beta",
+		"release:patch": "bun ../../scripts/generate-version.ts patch",
+		"release:minor": "bun ../../scripts/generate-version.ts minor",
+		"release:major": "bun ../../scripts/generate-version.ts major",
+		"test": "bunx vitest --config vitest.config.ts --run",
+		"test:watch": "bunx vitest --config vitest.config.ts --watch",
+		"typecheck": "bunx tsc --project tsconfig.json --noEmit"
+	},
+	"peerDependencies": {
+		"libphonenumber-js": ">=1.13.7",
+		"zod": ">=4.4.3"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"libphonenumber-js": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:",
+		"zod": "catalog:"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./apiService": {
+			"import": "./dist/modules/services/apiService.js",
+			"types": "./dist/services/apiService.d.ts",
+			"default": "./dist/modules/services/apiService.js"
+		},
+		"./badGateway": {
+			"import": "./dist/modules/http/badResponses/badGateway.js",
+			"types": "./dist/http/badResponses/badGateway.d.ts",
+			"default": "./dist/modules/http/badResponses/badGateway.js"
+		},
+		"./badRequest": {
+			"import": "./dist/modules/http/badResponses/badRequest.js",
+			"types": "./dist/http/badResponses/badRequest.d.ts",
+			"default": "./dist/modules/http/badResponses/badRequest.js"
+		},
+		"./conflict": {
+			"import": "./dist/modules/http/badResponses/conflict.js",
+			"types": "./dist/http/badResponses/conflict.d.ts",
+			"default": "./dist/modules/http/badResponses/conflict.js"
+		},
+		"./created": {
+			"import": "./dist/modules/http/successResponses/created.js",
+			"types": "./dist/http/successResponses/created.d.ts",
+			"default": "./dist/modules/http/successResponses/created.js"
+		},
+		"./debugService": {
+			"import": "./dist/modules/services/debugService.js",
+			"types": "./dist/services/debugService.d.ts",
+			"default": "./dist/modules/services/debugService.js"
+		},
+		"./decodeRequestBody": {
+			"import": "./dist/modules/utilities/decodeRequestBody.js",
+			"types": "./dist/utilities/decodeRequestBody.d.ts",
+			"default": "./dist/modules/utilities/decodeRequestBody.js"
+		},
+		"./decodeRequestErrorMessage": {
+			"import": "./dist/modules/utilities/decodeRequestErrorMessage.js",
+			"types": "./dist/utilities/decodeRequestErrorMessage.d.ts",
+			"default": "./dist/modules/utilities/decodeRequestErrorMessage.js"
+		},
+		"./errorHandler": {
+			"import": "./dist/modules/utilities/errorHandler.js",
+			"types": "./dist/utilities/errorHandler.d.ts",
+			"default": "./dist/modules/utilities/errorHandler.js"
+		},
+		"./flushDebugLogs": {
+			"import": "./dist/modules/utilities/flushDebugLogs.js",
+			"types": "./dist/utilities/flushDebugLogs.d.ts",
+			"default": "./dist/modules/utilities/flushDebugLogs.js"
+		},
+		"./forbidden": {
+			"import": "./dist/modules/http/badResponses/forbidden.js",
+			"types": "./dist/http/badResponses/forbidden.d.ts",
+			"default": "./dist/modules/http/badResponses/forbidden.js"
+		},
+		"./formAsyncParse": {
+			"import": "./dist/modules/utilities/formAsyncParse.js",
+			"types": "./dist/utilities/formAsyncParse.d.ts",
+			"default": "./dist/modules/utilities/formAsyncParse.js"
+		},
+		"./formParse": {
+			"import": "./dist/modules/utilities/formParse.js",
+			"types": "./dist/utilities/formParse.d.ts",
+			"default": "./dist/modules/utilities/formParse.js"
+		},
+		"./found": {
+			"import": "./dist/modules/http/successResponses/found.js",
+			"types": "./dist/http/successResponses/found.d.ts",
+			"default": "./dist/modules/http/successResponses/found.js"
+		},
+		"./getScopedParams": {
+			"import": "./dist/modules/utilities/getScopedParams.js",
+			"types": "./dist/utilities/getScopedParams.d.ts",
+			"default": "./dist/modules/utilities/getScopedParams.js"
+		},
+		"./logService": {
+			"import": "./dist/modules/services/logService.js",
+			"types": "./dist/services/logService.d.ts",
+			"default": "./dist/modules/services/logService.js"
+		},
+		"./noContent": {
+			"import": "./dist/modules/http/successResponses/noContent.js",
+			"types": "./dist/http/successResponses/noContent.d.ts",
+			"default": "./dist/modules/http/successResponses/noContent.js"
+		},
+		"./notFound": {
+			"import": "./dist/modules/http/badResponses/notFound.js",
+			"types": "./dist/http/badResponses/notFound.d.ts",
+			"default": "./dist/modules/http/badResponses/notFound.js"
+		},
+		"./notImplemented": {
+			"import": "./dist/modules/http/badResponses/notImplemented.js",
+			"types": "./dist/http/badResponses/notImplemented.d.ts",
+			"default": "./dist/modules/http/badResponses/notImplemented.js"
+		},
+		"./schemaValidator": {
+			"import": "./dist/modules/utilities/schemaValidator.js",
+			"types": "./dist/utilities/schemaValidator.d.ts",
+			"default": "./dist/modules/utilities/schemaValidator.js"
+		},
+		"./serverError": {
+			"import": "./dist/modules/http/badResponses/serverError.js",
+			"types": "./dist/http/badResponses/serverError.d.ts",
+			"default": "./dist/modules/http/badResponses/serverError.js"
+		},
+		"./success": {
+			"import": "./dist/modules/http/successResponses/success.js",
+			"types": "./dist/http/successResponses/success.d.ts",
+			"default": "./dist/modules/http/successResponses/success.js"
+		},
+		"./unauthorized": {
+			"import": "./dist/modules/http/badResponses/unauthorized.js",
+			"types": "./dist/http/badResponses/unauthorized.d.ts",
+			"default": "./dist/modules/http/badResponses/unauthorized.js"
+		},
+		"./unprocessableEntity": {
+			"import": "./dist/modules/http/badResponses/unprocessableEntity.js",
+			"types": "./dist/http/badResponses/unprocessableEntity.d.ts",
+			"default": "./dist/modules/http/badResponses/unprocessableEntity.js"
+		},
+		"./updated": {
+			"import": "./dist/modules/http/successResponses/updated.js",
+			"types": "./dist/http/successResponses/updated.d.ts",
+			"default": "./dist/modules/http/successResponses/updated.js"
+		},
+		"./validateCep": {
+			"import": "./dist/modules/validations/validateCep.js",
+			"types": "./dist/validations/validateCep.d.ts",
+			"default": "./dist/modules/validations/validateCep.js"
+		},
+		"./validateCnpj": {
+			"import": "./dist/modules/validations/validateCnpj.js",
+			"types": "./dist/validations/validateCnpj.d.ts",
+			"default": "./dist/modules/validations/validateCnpj.js"
+		},
+		"./validateCpf": {
+			"import": "./dist/modules/validations/validateCpf.js",
+			"types": "./dist/validations/validateCpf.d.ts",
+			"default": "./dist/modules/validations/validateCpf.js"
+		},
+		"./validateDate": {
+			"import": "./dist/modules/validations/validateDate.js",
+			"types": "./dist/validations/validateDate.d.ts",
+			"default": "./dist/modules/validations/validateDate.js"
+		},
+		"./validateEmail": {
+			"import": "./dist/modules/validations/validateEmail.js",
+			"types": "./dist/validations/validateEmail.d.ts",
+			"default": "./dist/modules/validations/validateEmail.js"
+		},
+		"./validatePassword": {
+			"import": "./dist/modules/validations/validatePassword.js",
+			"types": "./dist/validations/validatePassword.d.ts",
+			"default": "./dist/modules/validations/validatePassword.js"
+		},
+		"./validatePhone": {
+			"import": "./dist/modules/validations/validatePhone.js",
+			"types": "./dist/validations/validatePhone.d.ts",
+			"default": "./dist/modules/validations/validatePhone.js"
+		},
+		"./validateRg": {
+			"import": "./dist/modules/validations/validateRg.js",
+			"types": "./dist/validations/validateRg.d.ts",
+			"default": "./dist/modules/validations/validateRg.js"
+		}
+	},
+	"typesVersions": {
+		"*": {
+			"apiService": [
+				"./dist/services/apiService.d.ts"
+			],
+			"badGateway": [
+				"./dist/http/badResponses/badGateway.d.ts"
+			],
+			"badRequest": [
+				"./dist/http/badResponses/badRequest.d.ts"
+			],
+			"conflict": [
+				"./dist/http/badResponses/conflict.d.ts"
+			],
+			"created": [
+				"./dist/http/successResponses/created.d.ts"
+			],
+			"debugService": [
+				"./dist/services/debugService.d.ts"
+			],
+			"decodeRequestBody": [
+				"./dist/utilities/decodeRequestBody.d.ts"
+			],
+			"decodeRequestErrorMessage": [
+				"./dist/utilities/decodeRequestErrorMessage.d.ts"
+			],
+			"errorHandler": [
+				"./dist/utilities/errorHandler.d.ts"
+			],
+			"flushDebugLogs": [
+				"./dist/utilities/flushDebugLogs.d.ts"
+			],
+			"forbidden": [
+				"./dist/http/badResponses/forbidden.d.ts"
+			],
+			"formAsyncParse": [
+				"./dist/utilities/formAsyncParse.d.ts"
+			],
+			"formParse": [
+				"./dist/utilities/formParse.d.ts"
+			],
+			"found": [
+				"./dist/http/successResponses/found.d.ts"
+			],
+			"getScopedParams": [
+				"./dist/utilities/getScopedParams.d.ts"
+			],
+			"logService": [
+				"./dist/services/logService.d.ts"
+			],
+			"noContent": [
+				"./dist/http/successResponses/noContent.d.ts"
+			],
+			"notFound": [
+				"./dist/http/badResponses/notFound.d.ts"
+			],
+			"notImplemented": [
+				"./dist/http/badResponses/notImplemented.d.ts"
+			],
+			"schemaValidator": [
+				"./dist/utilities/schemaValidator.d.ts"
+			],
+			"serverError": [
+				"./dist/http/badResponses/serverError.d.ts"
+			],
+			"success": [
+				"./dist/http/successResponses/success.d.ts"
+			],
+			"unauthorized": [
+				"./dist/http/badResponses/unauthorized.d.ts"
+			],
+			"unprocessableEntity": [
+				"./dist/http/badResponses/unprocessableEntity.d.ts"
+			],
+			"updated": [
+				"./dist/http/successResponses/updated.d.ts"
+			],
+			"validateCep": [
+				"./dist/validations/validateCep.d.ts"
+			],
+			"validateCnpj": [
+				"./dist/validations/validateCnpj.d.ts"
+			],
+			"validateCpf": [
+				"./dist/validations/validateCpf.d.ts"
+			],
+			"validateDate": [
+				"./dist/validations/validateDate.d.ts"
+			],
+			"validateEmail": [
+				"./dist/validations/validateEmail.d.ts"
+			],
+			"validatePassword": [
+				"./dist/validations/validatePassword.d.ts"
+			],
+			"validatePhone": [
+				"./dist/validations/validatePhone.d.ts"
+			],
+			"validateRg": [
+				"./dist/validations/validateRg.d.ts"
+			]
+		}
+	}
 }

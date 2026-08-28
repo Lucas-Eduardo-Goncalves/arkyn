@@ -1,286 +1,286 @@
 {
-  "name": "@arkyn/shared",
-  "version": "3.0.10",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "license": "Apache-2.0",
-  "author": "Arkyn | Lucas Gonçalves",
-  "description": "Comprehensive collection of reusable utilities for data formatting, validation, generation, and manipulation, featuring Brazilian document validators and financial tools.",
-  "keywords": [
-    "utilities",
-    "formatting",
-    "brazilian-documents",
-    "cpf",
-    "cnpj",
-    "cep",
-    "currency",
-    "typescript",
-    "generators"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "bun": ">=1.0.0"
-  },
-  "homepage": "https://docs.arkyn.dev/docs/shared/introduction",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
-    "directory": "packages/shared"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "AGENTS.md",
-    "LICENSE.txt"
-  ],
-  "sideEffects": false,
-  "scripts": {
-    "audit": "bun audit",
-    "build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
-    "prebuild": "rm -rf dist",
-    "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
-    "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ../../scripts/generate-version.ts beta",
-    "release:patch": "bun ../../scripts/generate-version.ts patch",
-    "release:minor": "bun ../../scripts/generate-version.ts minor",
-    "release:major": "bun ../../scripts/generate-version.ts major",
-    "test": "bunx vitest --config vitest.config.ts --run",
-    "test:watch": "bunx vitest --config vitest.config.ts --watch",
-    "typecheck": "bunx tsc --project tsconfig.json --noEmit"
-  },
-  "dependencies": {
-    "@arkyn/templates": "^3.0.2"
-  },
-  "peerDependencies": {
-    "libphonenumber-js": ">=1.13.7"
-  },
-  "peerDependenciesMeta": {
-    "libphonenumber-js": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "@types/bun": "catalog:",
-    "@types/node": "catalog:",
-    "libphonenumber-js": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./calculateCardInstallment": {
-      "import": "./dist/modules/utilities/calculateCardInstallment.js",
-      "types": "./dist/utilities/calculateCardInstallment.d.ts",
-      "default": "./dist/modules/utilities/calculateCardInstallment.js"
-    },
-    "./ensureQuotes": {
-      "import": "./dist/modules/utilities/ensureQuotes.js",
-      "types": "./dist/utilities/ensureQuotes.d.ts",
-      "default": "./dist/modules/utilities/ensureQuotes.js"
-    },
-    "./findCountryMask": {
-      "import": "./dist/modules/utilities/findCountryMask.js",
-      "types": "./dist/utilities/findCountryMask.d.ts",
-      "default": "./dist/modules/utilities/findCountryMask.js"
-    },
-    "./formatDate": {
-      "import": "./dist/modules/formats/formatDate.js",
-      "types": "./dist/formats/formatDate.d.ts",
-      "default": "./dist/modules/formats/formatDate.js"
-    },
-    "./formatJsonObject": {
-      "import": "./dist/modules/formats/formatJsonObject.js",
-      "types": "./dist/formats/formatJsonObject.d.ts",
-      "default": "./dist/modules/formats/formatJsonObject.js"
-    },
-    "./formatJsonString": {
-      "import": "./dist/modules/formats/formatJsonString.js",
-      "types": "./dist/formats/formatJsonString.d.ts",
-      "default": "./dist/modules/formats/formatJsonString.js"
-    },
-    "./formatToCapitalizeFirstWordLetter": {
-      "import": "./dist/modules/formats/formatToCapitalizeFirstWordLetter.js",
-      "types": "./dist/formats/formatToCapitalizeFirstWordLetter.d.ts",
-      "default": "./dist/modules/formats/formatToCapitalizeFirstWordLetter.js"
-    },
-    "./formatToCep": {
-      "import": "./dist/modules/formats/formatToCep.js",
-      "types": "./dist/formats/formatToCep.d.ts",
-      "default": "./dist/modules/formats/formatToCep.js"
-    },
-    "./formatToCnpj": {
-      "import": "./dist/modules/formats/formatToCnpj.js",
-      "types": "./dist/formats/formatToCnpj.d.ts",
-      "default": "./dist/modules/formats/formatToCnpj.js"
-    },
-    "./formatToCpf": {
-      "import": "./dist/modules/formats/formatToCpf.js",
-      "types": "./dist/formats/formatToCpf.d.ts",
-      "default": "./dist/modules/formats/formatToCpf.js"
-    },
-    "./formatToCurrency": {
-      "import": "./dist/modules/formats/formatToCurrency.js",
-      "types": "./dist/formats/formatToCurrency.d.ts",
-      "default": "./dist/modules/formats/formatToCurrency.js"
-    },
-    "./formatToEllipsis": {
-      "import": "./dist/modules/formats/formatToEllipsis.js",
-      "types": "./dist/formats/formatToEllipsis.d.ts",
-      "default": "./dist/modules/formats/formatToEllipsis.js"
-    },
-    "./formatToHiddenDigits": {
-      "import": "./dist/modules/formats/formatToHiddenDigits.js",
-      "types": "./dist/formats/formatToHiddenDigits.d.ts",
-      "default": "./dist/modules/formats/formatToHiddenDigits.js"
-    },
-    "./formatToPhone": {
-      "import": "./dist/modules/formats/formatToPhone.js",
-      "types": "./dist/formats/formatToPhone.d.ts",
-      "default": "./dist/modules/formats/formatToPhone.js"
-    },
-    "./generateColorByString": {
-      "import": "./dist/modules/generators/generateColorByString.js",
-      "types": "./dist/generators/generateColorByString.d.ts",
-      "default": "./dist/modules/generators/generateColorByString.js"
-    },
-    "./generateId": {
-      "import": "./dist/modules/generators/generateId.js",
-      "types": "./dist/generators/generateId.d.ts",
-      "default": "./dist/modules/generators/generateId.js"
-    },
-    "./generateSlug": {
-      "import": "./dist/modules/generators/generateSlug.js",
-      "types": "./dist/generators/generateSlug.d.ts",
-      "default": "./dist/modules/generators/generateSlug.js"
-    },
-    "./isHtml": {
-      "import": "./dist/modules/utilities/isHtml.js",
-      "types": "./dist/utilities/isHtml.d.ts",
-      "default": "./dist/modules/utilities/isHtml.js"
-    },
-    "./parseLargeFields": {
-      "import": "./dist/modules/parsers/parseLargeFields.js",
-      "types": "./dist/parsers/parseLargeFields.d.ts",
-      "default": "./dist/modules/parsers/parseLargeFields.js"
-    },
-    "./parseSensitiveData": {
-      "import": "./dist/modules/parsers/parseSensitiveData.js",
-      "types": "./dist/parsers/parseSensitiveData.d.ts",
-      "default": "./dist/modules/parsers/parseSensitiveData.js"
-    },
-    "./parseToDate": {
-      "import": "./dist/modules/parsers/parseToDate.js",
-      "types": "./dist/parsers/parseToDate.d.ts",
-      "default": "./dist/modules/parsers/parseToDate.js"
-    },
-    "./removeCurrencySymbols": {
-      "import": "./dist/modules/utilities/removeCurrencySymbols.js",
-      "types": "./dist/utilities/removeCurrencySymbols.d.ts",
-      "default": "./dist/modules/utilities/removeCurrencySymbols.js"
-    },
-    "./removeNonNumeric": {
-      "import": "./dist/modules/utilities/removeNonNumeric.js",
-      "types": "./dist/utilities/removeNonNumeric.d.ts",
-      "default": "./dist/modules/utilities/removeNonNumeric.js"
-    },
-    "./stripHtmlTags": {
-      "import": "./dist/modules/utilities/stripHtmlTags.js",
-      "types": "./dist/utilities/stripHtmlTags.d.ts",
-      "default": "./dist/modules/utilities/stripHtmlTags.js"
-    },
-    "./validateDateService": {
-      "import": "./dist/modules/services/validateDateService.js",
-      "types": "./dist/services/validateDateService.d.ts",
-      "default": "./dist/modules/services/validateDateService.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "calculateCardInstallment": [
-        "./dist/utilities/calculateCardInstallment.d.ts"
-      ],
-      "ensureQuotes": [
-        "./dist/utilities/ensureQuotes.d.ts"
-      ],
-      "findCountryMask": [
-        "./dist/utilities/findCountryMask.d.ts"
-      ],
-      "formatDate": [
-        "./dist/formats/formatDate.d.ts"
-      ],
-      "formatJsonObject": [
-        "./dist/formats/formatJsonObject.d.ts"
-      ],
-      "formatJsonString": [
-        "./dist/formats/formatJsonString.d.ts"
-      ],
-      "formatToCapitalizeFirstWordLetter": [
-        "./dist/formats/formatToCapitalizeFirstWordLetter.d.ts"
-      ],
-      "formatToCep": [
-        "./dist/formats/formatToCep.d.ts"
-      ],
-      "formatToCnpj": [
-        "./dist/formats/formatToCnpj.d.ts"
-      ],
-      "formatToCpf": [
-        "./dist/formats/formatToCpf.d.ts"
-      ],
-      "formatToCurrency": [
-        "./dist/formats/formatToCurrency.d.ts"
-      ],
-      "formatToEllipsis": [
-        "./dist/formats/formatToEllipsis.d.ts"
-      ],
-      "formatToHiddenDigits": [
-        "./dist/formats/formatToHiddenDigits.d.ts"
-      ],
-      "formatToPhone": [
-        "./dist/formats/formatToPhone.d.ts"
-      ],
-      "generateColorByString": [
-        "./dist/generators/generateColorByString.d.ts"
-      ],
-      "generateId": [
-        "./dist/generators/generateId.d.ts"
-      ],
-      "generateSlug": [
-        "./dist/generators/generateSlug.d.ts"
-      ],
-      "isHtml": [
-        "./dist/utilities/isHtml.d.ts"
-      ],
-      "parseLargeFields": [
-        "./dist/parsers/parseLargeFields.d.ts"
-      ],
-      "parseSensitiveData": [
-        "./dist/parsers/parseSensitiveData.d.ts"
-      ],
-      "parseToDate": [
-        "./dist/parsers/parseToDate.d.ts"
-      ],
-      "removeCurrencySymbols": [
-        "./dist/utilities/removeCurrencySymbols.d.ts"
-      ],
-      "removeNonNumeric": [
-        "./dist/utilities/removeNonNumeric.d.ts"
-      ],
-      "stripHtmlTags": [
-        "./dist/utilities/stripHtmlTags.d.ts"
-      ],
-      "validateDateService": [
-        "./dist/services/validateDateService.d.ts"
-      ]
-    }
-  }
+	"name": "@arkyn/shared",
+	"version": "3.0.11",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"type": "module",
+	"types": "./dist/index.d.ts",
+	"license": "Apache-2.0",
+	"author": "Arkyn | Lucas Gonçalves",
+	"description": "Comprehensive collection of reusable utilities for data formatting, validation, generation, and manipulation, featuring Brazilian document validators and financial tools.",
+	"keywords": [
+		"utilities",
+		"formatting",
+		"brazilian-documents",
+		"cpf",
+		"cnpj",
+		"cep",
+		"currency",
+		"typescript",
+		"generators"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"bun": ">=1.0.0"
+	},
+	"homepage": "https://docs.arkyn.dev/docs/shared/introduction",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
+		"directory": "packages/shared"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"AGENTS.md",
+		"LICENSE.txt"
+	],
+	"sideEffects": false,
+	"scripts": {
+		"audit": "bun audit",
+		"build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
+		"prebuild": "rm -rf dist",
+		"publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
+		"publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
+		"release:beta": "bun ../../scripts/generate-version.ts beta",
+		"release:patch": "bun ../../scripts/generate-version.ts patch",
+		"release:minor": "bun ../../scripts/generate-version.ts minor",
+		"release:major": "bun ../../scripts/generate-version.ts major",
+		"test": "bunx vitest --config vitest.config.ts --run",
+		"test:watch": "bunx vitest --config vitest.config.ts --watch",
+		"typecheck": "bunx tsc --project tsconfig.json --noEmit"
+	},
+	"dependencies": {
+		"@arkyn/templates": "^3.0.2"
+	},
+	"peerDependencies": {
+		"libphonenumber-js": ">=1.13.7"
+	},
+	"peerDependenciesMeta": {
+		"libphonenumber-js": {
+			"optional": true
+		}
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"libphonenumber-js": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./calculateCardInstallment": {
+			"import": "./dist/modules/utilities/calculateCardInstallment.js",
+			"types": "./dist/utilities/calculateCardInstallment.d.ts",
+			"default": "./dist/modules/utilities/calculateCardInstallment.js"
+		},
+		"./ensureQuotes": {
+			"import": "./dist/modules/utilities/ensureQuotes.js",
+			"types": "./dist/utilities/ensureQuotes.d.ts",
+			"default": "./dist/modules/utilities/ensureQuotes.js"
+		},
+		"./findCountryMask": {
+			"import": "./dist/modules/utilities/findCountryMask.js",
+			"types": "./dist/utilities/findCountryMask.d.ts",
+			"default": "./dist/modules/utilities/findCountryMask.js"
+		},
+		"./formatDate": {
+			"import": "./dist/modules/formats/formatDate.js",
+			"types": "./dist/formats/formatDate.d.ts",
+			"default": "./dist/modules/formats/formatDate.js"
+		},
+		"./formatJsonObject": {
+			"import": "./dist/modules/formats/formatJsonObject.js",
+			"types": "./dist/formats/formatJsonObject.d.ts",
+			"default": "./dist/modules/formats/formatJsonObject.js"
+		},
+		"./formatJsonString": {
+			"import": "./dist/modules/formats/formatJsonString.js",
+			"types": "./dist/formats/formatJsonString.d.ts",
+			"default": "./dist/modules/formats/formatJsonString.js"
+		},
+		"./formatToCapitalizeFirstWordLetter": {
+			"import": "./dist/modules/formats/formatToCapitalizeFirstWordLetter.js",
+			"types": "./dist/formats/formatToCapitalizeFirstWordLetter.d.ts",
+			"default": "./dist/modules/formats/formatToCapitalizeFirstWordLetter.js"
+		},
+		"./formatToCep": {
+			"import": "./dist/modules/formats/formatToCep.js",
+			"types": "./dist/formats/formatToCep.d.ts",
+			"default": "./dist/modules/formats/formatToCep.js"
+		},
+		"./formatToCnpj": {
+			"import": "./dist/modules/formats/formatToCnpj.js",
+			"types": "./dist/formats/formatToCnpj.d.ts",
+			"default": "./dist/modules/formats/formatToCnpj.js"
+		},
+		"./formatToCpf": {
+			"import": "./dist/modules/formats/formatToCpf.js",
+			"types": "./dist/formats/formatToCpf.d.ts",
+			"default": "./dist/modules/formats/formatToCpf.js"
+		},
+		"./formatToCurrency": {
+			"import": "./dist/modules/formats/formatToCurrency.js",
+			"types": "./dist/formats/formatToCurrency.d.ts",
+			"default": "./dist/modules/formats/formatToCurrency.js"
+		},
+		"./formatToEllipsis": {
+			"import": "./dist/modules/formats/formatToEllipsis.js",
+			"types": "./dist/formats/formatToEllipsis.d.ts",
+			"default": "./dist/modules/formats/formatToEllipsis.js"
+		},
+		"./formatToHiddenDigits": {
+			"import": "./dist/modules/formats/formatToHiddenDigits.js",
+			"types": "./dist/formats/formatToHiddenDigits.d.ts",
+			"default": "./dist/modules/formats/formatToHiddenDigits.js"
+		},
+		"./formatToPhone": {
+			"import": "./dist/modules/formats/formatToPhone.js",
+			"types": "./dist/formats/formatToPhone.d.ts",
+			"default": "./dist/modules/formats/formatToPhone.js"
+		},
+		"./generateColorByString": {
+			"import": "./dist/modules/generators/generateColorByString.js",
+			"types": "./dist/generators/generateColorByString.d.ts",
+			"default": "./dist/modules/generators/generateColorByString.js"
+		},
+		"./generateId": {
+			"import": "./dist/modules/generators/generateId.js",
+			"types": "./dist/generators/generateId.d.ts",
+			"default": "./dist/modules/generators/generateId.js"
+		},
+		"./generateSlug": {
+			"import": "./dist/modules/generators/generateSlug.js",
+			"types": "./dist/generators/generateSlug.d.ts",
+			"default": "./dist/modules/generators/generateSlug.js"
+		},
+		"./isHtml": {
+			"import": "./dist/modules/utilities/isHtml.js",
+			"types": "./dist/utilities/isHtml.d.ts",
+			"default": "./dist/modules/utilities/isHtml.js"
+		},
+		"./parseLargeFields": {
+			"import": "./dist/modules/parsers/parseLargeFields.js",
+			"types": "./dist/parsers/parseLargeFields.d.ts",
+			"default": "./dist/modules/parsers/parseLargeFields.js"
+		},
+		"./parseSensitiveData": {
+			"import": "./dist/modules/parsers/parseSensitiveData.js",
+			"types": "./dist/parsers/parseSensitiveData.d.ts",
+			"default": "./dist/modules/parsers/parseSensitiveData.js"
+		},
+		"./parseToDate": {
+			"import": "./dist/modules/parsers/parseToDate.js",
+			"types": "./dist/parsers/parseToDate.d.ts",
+			"default": "./dist/modules/parsers/parseToDate.js"
+		},
+		"./removeCurrencySymbols": {
+			"import": "./dist/modules/utilities/removeCurrencySymbols.js",
+			"types": "./dist/utilities/removeCurrencySymbols.d.ts",
+			"default": "./dist/modules/utilities/removeCurrencySymbols.js"
+		},
+		"./removeNonNumeric": {
+			"import": "./dist/modules/utilities/removeNonNumeric.js",
+			"types": "./dist/utilities/removeNonNumeric.d.ts",
+			"default": "./dist/modules/utilities/removeNonNumeric.js"
+		},
+		"./stripHtmlTags": {
+			"import": "./dist/modules/utilities/stripHtmlTags.js",
+			"types": "./dist/utilities/stripHtmlTags.d.ts",
+			"default": "./dist/modules/utilities/stripHtmlTags.js"
+		},
+		"./validateDateService": {
+			"import": "./dist/modules/services/validateDateService.js",
+			"types": "./dist/services/validateDateService.d.ts",
+			"default": "./dist/modules/services/validateDateService.js"
+		}
+	},
+	"typesVersions": {
+		"*": {
+			"calculateCardInstallment": [
+				"./dist/utilities/calculateCardInstallment.d.ts"
+			],
+			"ensureQuotes": [
+				"./dist/utilities/ensureQuotes.d.ts"
+			],
+			"findCountryMask": [
+				"./dist/utilities/findCountryMask.d.ts"
+			],
+			"formatDate": [
+				"./dist/formats/formatDate.d.ts"
+			],
+			"formatJsonObject": [
+				"./dist/formats/formatJsonObject.d.ts"
+			],
+			"formatJsonString": [
+				"./dist/formats/formatJsonString.d.ts"
+			],
+			"formatToCapitalizeFirstWordLetter": [
+				"./dist/formats/formatToCapitalizeFirstWordLetter.d.ts"
+			],
+			"formatToCep": [
+				"./dist/formats/formatToCep.d.ts"
+			],
+			"formatToCnpj": [
+				"./dist/formats/formatToCnpj.d.ts"
+			],
+			"formatToCpf": [
+				"./dist/formats/formatToCpf.d.ts"
+			],
+			"formatToCurrency": [
+				"./dist/formats/formatToCurrency.d.ts"
+			],
+			"formatToEllipsis": [
+				"./dist/formats/formatToEllipsis.d.ts"
+			],
+			"formatToHiddenDigits": [
+				"./dist/formats/formatToHiddenDigits.d.ts"
+			],
+			"formatToPhone": [
+				"./dist/formats/formatToPhone.d.ts"
+			],
+			"generateColorByString": [
+				"./dist/generators/generateColorByString.d.ts"
+			],
+			"generateId": [
+				"./dist/generators/generateId.d.ts"
+			],
+			"generateSlug": [
+				"./dist/generators/generateSlug.d.ts"
+			],
+			"isHtml": [
+				"./dist/utilities/isHtml.d.ts"
+			],
+			"parseLargeFields": [
+				"./dist/parsers/parseLargeFields.d.ts"
+			],
+			"parseSensitiveData": [
+				"./dist/parsers/parseSensitiveData.d.ts"
+			],
+			"parseToDate": [
+				"./dist/parsers/parseToDate.d.ts"
+			],
+			"removeCurrencySymbols": [
+				"./dist/utilities/removeCurrencySymbols.d.ts"
+			],
+			"removeNonNumeric": [
+				"./dist/utilities/removeNonNumeric.d.ts"
+			],
+			"stripHtmlTags": [
+				"./dist/utilities/stripHtmlTags.d.ts"
+			],
+			"validateDateService": [
+				"./dist/services/validateDateService.d.ts"
+			]
+		}
+	}
 }

@@ -137,6 +137,26 @@ describe("useAutomation", () => {
 		expect(showToast).not.toHaveBeenCalled();
 	});
 
+	it("should show the toast again when a new response repeats the same name and message", () => {
+		const { rerender } = renderHook(({ data }) => useAutomation(data), {
+			initialProps: {
+				data: { name: "BadRequest", message: "Internal Server Error" },
+			},
+		});
+
+		expect(showToast).toHaveBeenCalledTimes(1);
+
+		rerender({
+			data: { name: "BadRequest", message: "Internal Server Error" },
+		});
+
+		expect(showToast).toHaveBeenCalledTimes(2);
+		expect(showToast).toHaveBeenLastCalledWith({
+			message: "Internal Server Error",
+			type: "danger",
+		});
+	});
+
 	it("should re-run side effects when formResponseData changes between renders", () => {
 		const { rerender } = renderHook(({ data }) => useAutomation(data), {
 			initialProps: { data: { name: "Created", message: "First" } },

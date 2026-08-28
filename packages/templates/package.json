@@ -1,106 +1,106 @@
 {
-  "name": "@arkyn/templates",
-  "version": "3.0.10",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "license": "Apache-2.0",
-  "author": "Arkyn | Lucas Gonçalves",
-  "description": "Ready-to-use data templates including countries, Brazilian states, currencies, and locale information.",
-  "keywords": [
-    "templates",
-    "data",
-    "countries",
-    "brazilian-states",
-    "currencies",
-    "locale",
-    "internationalization",
-    "typescript"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "bun": ">=1.0.0"
-  },
-  "homepage": "https://docs.arkyn.dev/docs/templates/introduction",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
-    "directory": "packages/templates"
-  },
-  "sideEffects": false,
-  "files": [
-    "dist",
-    "README.md",
-    "AGENTS.md",
-    "LICENSE.txt"
-  ],
-  "scripts": {
-    "audit": "bun audit",
-    "build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
-    "prebuild": "rm -rf dist",
-    "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
-    "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ../../scripts/generate-version.ts beta",
-    "release:patch": "bun ../../scripts/generate-version.ts patch",
-    "release:minor": "bun ../../scripts/generate-version.ts minor",
-    "release:major": "bun ../../scripts/generate-version.ts major",
-    "test": "bunx vitest --config vitest.config.ts --run",
-    "test:watch": "bunx vitest --config vitest.config.ts --watch",
-    "typecheck": "bunx tsc --project tsconfig.json --noEmit"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@types/bun": "catalog:",
-    "@types/node": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./brazilianStates": {
-      "import": "./dist/modules/brazilianStates.js",
-      "types": "./dist/brazilianStates.d.ts",
-      "default": "./dist/modules/brazilianStates.js"
-    },
-    "./countries": {
-      "import": "./dist/modules/countries.js",
-      "types": "./dist/countries.d.ts",
-      "default": "./dist/modules/countries.js"
-    },
-    "./countryCurrencies": {
-      "import": "./dist/modules/countryCurrencies.js",
-      "types": "./dist/countryCurrencies.d.ts",
-      "default": "./dist/modules/countryCurrencies.js"
-    },
-    "./maximumFractionDigits": {
-      "import": "./dist/modules/maximumFractionDigits.js",
-      "types": "./dist/maximumFractionDigits.d.ts",
-      "default": "./dist/modules/maximumFractionDigits.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "brazilianStates": [
-        "./dist/brazilianStates.d.ts"
-      ],
-      "countries": [
-        "./dist/countries.d.ts"
-      ],
-      "countryCurrencies": [
-        "./dist/countryCurrencies.d.ts"
-      ],
-      "maximumFractionDigits": [
-        "./dist/maximumFractionDigits.d.ts"
-      ]
-    }
-  }
+	"name": "@arkyn/templates",
+	"version": "3.0.11",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"type": "module",
+	"types": "./dist/index.d.ts",
+	"license": "Apache-2.0",
+	"author": "Arkyn | Lucas Gonçalves",
+	"description": "Ready-to-use data templates including countries, Brazilian states, currencies, and locale information.",
+	"keywords": [
+		"templates",
+		"data",
+		"countries",
+		"brazilian-states",
+		"currencies",
+		"locale",
+		"internationalization",
+		"typescript"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"bun": ">=1.0.0"
+	},
+	"homepage": "https://docs.arkyn.dev/docs/templates/introduction",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
+		"directory": "packages/templates"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"AGENTS.md",
+		"LICENSE.txt"
+	],
+	"scripts": {
+		"audit": "bun audit",
+		"build": "bunx vite build && bunx tsc --project tsconfig.json --emitDeclarationOnly && bun ../../scripts/generate-exports.ts && rm -f dist/modules/index.js dist/modules/style.css",
+		"prebuild": "rm -rf dist",
+		"publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
+		"publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
+		"release:beta": "bun ../../scripts/generate-version.ts beta",
+		"release:patch": "bun ../../scripts/generate-version.ts patch",
+		"release:minor": "bun ../../scripts/generate-version.ts minor",
+		"release:major": "bun ../../scripts/generate-version.ts major",
+		"test": "bunx vitest --config vitest.config.ts --run",
+		"test:watch": "bunx vitest --config vitest.config.ts --watch",
+		"typecheck": "bunx tsc --project tsconfig.json --noEmit"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./brazilianStates": {
+			"import": "./dist/modules/brazilianStates.js",
+			"types": "./dist/brazilianStates.d.ts",
+			"default": "./dist/modules/brazilianStates.js"
+		},
+		"./countries": {
+			"import": "./dist/modules/countries.js",
+			"types": "./dist/countries.d.ts",
+			"default": "./dist/modules/countries.js"
+		},
+		"./countryCurrencies": {
+			"import": "./dist/modules/countryCurrencies.js",
+			"types": "./dist/countryCurrencies.d.ts",
+			"default": "./dist/modules/countryCurrencies.js"
+		},
+		"./maximumFractionDigits": {
+			"import": "./dist/modules/maximumFractionDigits.js",
+			"types": "./dist/maximumFractionDigits.d.ts",
+			"default": "./dist/modules/maximumFractionDigits.js"
+		}
+	},
+	"typesVersions": {
+		"*": {
+			"brazilianStates": [
+				"./dist/brazilianStates.d.ts"
+			],
+			"countries": [
+				"./dist/countries.d.ts"
+			],
+			"countryCurrencies": [
+				"./dist/countryCurrencies.d.ts"
+			],
+			"maximumFractionDigits": [
+				"./dist/maximumFractionDigits.d.ts"
+			]
+		}
+	}
 }

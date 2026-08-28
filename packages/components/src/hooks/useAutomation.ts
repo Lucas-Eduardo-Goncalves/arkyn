@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { scroller } from "react-scroll";
 import { badResponses } from "../templates/badResponses";
 import { successResponses } from "../templates/successResponses";
@@ -47,33 +47,34 @@ function useAutomation(formResponseData: any) {
 	const { closeAll } = useModal();
 	const { showToast } = useToast();
 
-	const closeModal = formResponseData?.closeModal;
-	const message = formResponseData?.message;
-	const name = formResponseData?.name;
-	const scrollTo = formResponseData?.cause?.data?.scrollTo;
-	const firstErrorField = formResponseData?.cause?.fieldErrors
-		? (Object.values(formResponseData?.cause?.fieldErrors)[0] as string)
-		: null;
-
-	const fireToast = useCallback(() => {
-		if (!message && !firstErrorField) return;
-
-		if (successResponses.includes(name))
-			return showToast({ message, type: "success" });
-
-		if (!badResponses.includes(name)) return;
-		if (firstErrorField)
-			return showToast({ message: firstErrorField, type: "danger" });
-
-		if (message === "Unprocessable entity") return;
-		return showToast({ message, type: "danger" });
-	}, [message, firstErrorField, name, showToast]);
-
 	useEffect(() => {
+		const closeModal = formResponseData?.closeModal;
+		const message = formResponseData?.message;
+		const name = formResponseData?.name;
+		const scrollTo = formResponseData?.cause?.data?.scrollTo;
+		const firstErrorField = formResponseData?.cause?.fieldErrors
+			? (Object.values(formResponseData?.cause?.fieldErrors)[0] as string)
+			: null;
+
 		if (closeModal) closeAll();
 		if (scrollTo) scroller.scrollTo(scrollTo, { smooth: true, offset: 20 });
-		fireToast();
-	}, [closeModal, scrollTo, fireToast, closeAll]);
+
+		if (!message && !firstErrorField) return;
+
+		if (successResponses.includes(name)) {
+			showToast({ message, type: "success" });
+			return;
+		}
+
+		if (!badResponses.includes(name)) return;
+		if (firstErrorField) {
+			showToast({ message: firstErrorField, type: "danger" });
+			return;
+		}
+
+		if (message === "Unprocessable entity") return;
+		showToast({ message, type: "danger" });
+	}, [formResponseData, closeAll, showToast]);
 }
 
 export { useAutomation };

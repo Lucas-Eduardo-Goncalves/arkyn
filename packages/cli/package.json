@@ -1,61 +1,61 @@
 {
-  "name": "@arkyn/cli",
-  "version": "3.0.10",
-  "type": "module",
-  "private": false,
-  "license": "Apache-2.0",
-  "author": "Arkyn | Lucas Gonçalves",
-  "description": "Command-line tool for the Arkyn ecosystem, generates and maintains an AGENTS.md file so AI coding assistants know how to use installed @arkyn/* packages.",
-  "keywords": [
-    "cli",
-    "arkyn",
-    "ai",
-    "agents",
-    "agents.md",
-    "developer-tools",
-    "typescript"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "bun": ">=1.0.0"
-  },
-  "homepage": "https://docs.arkyn.dev/docs/cli/introduction",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
-    "directory": "packages/cli"
-  },
-  "bin": {
-    "arkyn": "./dist/bundle.js"
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE.txt"
-  ],
-  "scripts": {
-    "audit": "bun audit",
-    "build": "bunx vite build",
-    "postbuild": "chmod +x dist/bundle.js",
-    "prebuild": "rm -rf dist",
-    "publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
-    "publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
-    "release:beta": "bun ../../scripts/generate-version.ts beta",
-    "release:patch": "bun ../../scripts/generate-version.ts patch",
-    "release:minor": "bun ../../scripts/generate-version.ts minor",
-    "release:major": "bun ../../scripts/generate-version.ts major",
-    "test": "bunx vitest --config vitest.config.ts --run",
-    "test:watch": "bunx vitest --config vitest.config.ts --watch",
-    "typecheck": "bunx tsc --project tsconfig.json --noEmit"
-  },
-  "devDependencies": {
-    "@types/bun": "catalog:",
-    "@types/node": "catalog:",
-    "typescript": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
-  }
+	"name": "@arkyn/cli",
+	"version": "3.0.11",
+	"type": "module",
+	"private": false,
+	"license": "Apache-2.0",
+	"author": "Arkyn | Lucas Gonçalves",
+	"description": "Command-line tool for the Arkyn ecosystem, generates and maintains an AGENTS.md file so AI coding assistants know how to use installed @arkyn/* packages.",
+	"keywords": [
+		"cli",
+		"arkyn",
+		"ai",
+		"agents",
+		"agents.md",
+		"developer-tools",
+		"typescript"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"bun": ">=1.0.0"
+	},
+	"homepage": "https://docs.arkyn.dev/docs/cli/introduction",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lucas-Eduardo-Goncalves/arkyn-library.git",
+		"directory": "packages/cli"
+	},
+	"bin": {
+		"arkyn": "./dist/bundle.js"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE.txt"
+	],
+	"scripts": {
+		"audit": "bun audit",
+		"build": "bunx vite build",
+		"postbuild": "chmod +x dist/bundle.js",
+		"prebuild": "rm -rf dist",
+		"publish:beta": "bash ../../scripts/publish-idempotent.sh beta",
+		"publish:latest": "bash ../../scripts/publish-idempotent.sh latest",
+		"release:beta": "bun ../../scripts/generate-version.ts beta",
+		"release:patch": "bun ../../scripts/generate-version.ts patch",
+		"release:minor": "bun ../../scripts/generate-version.ts minor",
+		"release:major": "bun ../../scripts/generate-version.ts major",
+		"test": "bunx vitest --config vitest.config.ts --run",
+		"test:watch": "bunx vitest --config vitest.config.ts --watch",
+		"typecheck": "bunx tsc --project tsconfig.json --noEmit"
+	},
+	"devDependencies": {
+		"@types/bun": "catalog:",
+		"@types/node": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	}
 }
